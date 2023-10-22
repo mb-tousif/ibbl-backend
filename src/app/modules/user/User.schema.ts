@@ -11,7 +11,7 @@ const userSchema = new Schema<TUser>(
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Password is required"],
     },
     email: {
       type: String,
@@ -20,7 +20,7 @@ const userSchema = new Schema<TUser>(
     },
     accountNo: {
       type: String,
-      required: true,
+      default: "Not Assigned",
     },
     accountType: {
       type: String,
@@ -56,9 +56,21 @@ const userSchema = new Schema<TUser>(
         "cashier",
         "manager",
         "defaulter",
-        "premium_user",
+        "account_holder",
       ],
       default: "user",
+    },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
+    OTP: {
+      type: Number,
+    },
+    confirmedAccount: {
+      type: Boolean,
+      default: false,
     },
     address: {
       type: String,

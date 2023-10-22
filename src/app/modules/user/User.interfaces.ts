@@ -11,8 +11,8 @@ export type TAccountType =
 export type TUser = {
   id: string;
   email: string;
-  img: string;
   password: string;
+  img: string;
   accountType?: TAccountType;
   accountNo?: string;
   contactNo: string;
@@ -21,7 +21,10 @@ export type TUser = {
     middleName?: string;
     lastName: string;
   };
+  OTP?: number;
+  confirmedAccount?: boolean;
   role: TUserRoles;
+  status?: string;
   address: string;
   balance?: number;
   deposit?: number;

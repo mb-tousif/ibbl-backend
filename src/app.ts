@@ -2,8 +2,8 @@ import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import cookieParser from "cookie-parser";
-import config from "./config";
 import router from "./app/routes";
+import config from "./config";
 import GlobalErrorHandler from "./app/middleware/globalErrorHandler";
 
 const app: Application = express();
@@ -19,7 +19,7 @@ app.use("/api/v1", router);
 //Testing
 app.get("/", (req: Request, res: Response) => {
   res.send(
-    `<h3 style='text-align: center; padding: 20px; color:tomato'>🐱‍🏍 Welcome to ${config.app_name} API 🐱‍🏍</h3>`
+    `<h3 style='text-align: center; padding: 20px; color:tomato'>🛢 Welcome to ${config.app_name} API 🔌 </h3>`
   );
 });
 
@@ -28,7 +28,7 @@ app.use(GlobalErrorHandler);
 
 //handle not found
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(httpStatus.NOT_FOUND).json({
+  res.status(httpStatus.NOT_FOUND as number).json({
     success: false,
     message: "Not Found",
     errorMessages: [

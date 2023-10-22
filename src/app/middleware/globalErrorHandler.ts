@@ -1,7 +1,6 @@
-import { ErrorRequestHandler, Request, Response } from "express";
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import config from "../../config";
 import { IGenericErrorMessage } from "../../types/errorType";
-import httpStatus from "http-status";
 import handleValidationError from "../../errorHandling/handleValidationError";
 import { ZodError } from "zod";
 import handleZodError from "../../errorHandling/handleZodError";
@@ -12,12 +11,14 @@ const GlobalErrorHandler: ErrorRequestHandler = (
   error,
   req: Request,
   res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  next: NextFunction
 ) => {
   config.env === "development"
     ? console.log(`💥 globalErrorHandler ~~`, { error })
     : console.log(`💥 globalErrorHandler ~~`, error);
 
-  let statusCode = Number(httpStatus.INTERNAL_SERVER_ERROR);
+  let statusCode = 500;
   let message = "⛔ Something went wrong !";
   let errorMessages: IGenericErrorMessage[] = [];
 

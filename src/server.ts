@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import { Server } from "http";
 import mongoose from "mongoose";
-import config from "../config";
-import app from "../index";
+import config from "./config";
+import app from "./app";
 
 process.on("uncaughtException", (error) => {
   console.log(error);
@@ -11,13 +11,13 @@ process.on("uncaughtException", (error) => {
 
 let server: Server;
 
-async function bootstrap() {
+async function ConnectServer() {
   try {
     await mongoose.connect(config.database_url as string);
-    console.log(`🛢   Database is connected successfully`);
+    console.log(`🔌 Database is connected successfully`);
 
     server = app.listen(config.port, () => {
-      console.log(`Application listening on port ${config.port}`);
+      console.log(`Application listening on port 5000`);
     });
   } catch (err) {
     console.log("Failed to connect database", err);
@@ -35,11 +35,11 @@ async function bootstrap() {
   });
 }
 
-bootstrap();
-
 process.on("SIGTERM", () => {
   console.log("SIGTERM is received");
   if (server) {
     server.close();
   }
 });
+
+ConnectServer();

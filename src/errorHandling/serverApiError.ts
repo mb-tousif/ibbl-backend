@@ -1,11 +1,9 @@
 class ServerAPIError extends Error {
-  constructor(
-    public success: boolean,
-    public statusCode: number,
-    message: string,
-    stack = ""
-  ) {
+  statusCode: number;
+
+  constructor(statusCode: number, message: string | undefined, stack = "") {
     super(message);
+    this.statusCode = statusCode;
     if (stack) {
       this.stack = stack;
     } else {

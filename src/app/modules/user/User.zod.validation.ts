@@ -11,9 +11,13 @@ const postValidation = z.object({
     }).min(6),
     accountType: z.enum(["Savings A/C", "Current A/C", "Salary A/C", "Student A/C"]).optional(),
     accountNo: z.string().optional(),
+    NID: z.string().optional(),
+    gender: z.enum(["Male", "Female", "Other"], {
+        required_error: "Gender is required"
+    }),
     contactNo: z.string({
         required_error: "Contact number is required"
-    }).min(11).max(15),
+    }).min(11).max(20),
     name: z.object({
         firstName: z.string().min(2).max(20),
         middleName: z.string().optional(),

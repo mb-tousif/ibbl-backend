@@ -1,14 +1,10 @@
 import { Schema, model } from 'mongoose';
-import { TUser } from './User.interfaces';
+import { TUser, UserModel } from './User.interfaces';
 import config from '../../../config';
 import bcrypt from 'bcrypt';
 
 const userSchema = new Schema<TUser>(
   {
-    id: {
-      type: String,
-      unique: true,
-    },
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -24,12 +20,12 @@ const userSchema = new Schema<TUser>(
     },
     accountType: {
       type: String,
-      enum: ["Savings A/C", "Current A/C", "Salary A/C", "Student A/C"],
-      default: "Current A/C",
+      enum: ["Savings A/C","Not Chosen", "Current A/C", "Salary A/C", "Student A/C"],
+      default: "Not Chosen",
     },
     img: {
       type: String,
-      default: "https://i.imgur.com/HeIi0wU.png",
+      default: "https://img.freepik.com/premium-vector/young-man-avatar-character_24877-9475.jpg",
     },
     contactNo: {
       type: String,
@@ -48,13 +44,14 @@ const userSchema = new Schema<TUser>(
         required: true,
       },
     },
+    gender: {
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
       enum: [
-        "admin",
         "user",
-        "cashier",
-        "manager",
         "defaulter",
         "account_holder",
       ],
@@ -62,15 +59,20 @@ const userSchema = new Schema<TUser>(
     },
     status: {
       type: String,
-      enum: ["active", "inactive"],
-      default: "active",
+      enum: ["Active", "Inactive", "Pending", "Blocked"],
+      default: "Pending",
     },
     OTP: {
       type: Number,
+      required: true,
     },
     confirmedAccount: {
       type: Boolean,
       default: false,
+    },
+    NID: {
+      type: String,
+      required: true,
     },
     address: {
       type: String,
@@ -116,5 +118,12 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-// 3. Create a Model.
-export const User = model<TUser>('User', userSchema);
+// Compare Password
+userSchema.statics.isPasswordMatched = async function (
+  givenPassword: string,
+  savedPassword: string
+): Promise<boolean> {
+  return await bcrypt.compare(givenPassword, savedPassword);
+};
+
+export const User = model<TUser, UserModel>("User", userSchema);

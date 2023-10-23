@@ -1,6 +1,6 @@
 import { Model } from "mongoose";
 
-export type TUserRoles = "user" | "defaulter" | "premium_user";
+export type TUserRoles = "user" | "defaulter" | "premium_user" | "admin" | "cashier" | "manager" | "CEO"
 
 export type TAccountType =
   | "Savings A/C"

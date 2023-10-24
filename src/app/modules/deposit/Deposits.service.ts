@@ -5,7 +5,7 @@ const createDeposit =  async ( payload: IDeposits ) => {
     const isExits = await Deposits.findOne({ userId: payload.userId });
     if ( isExits){
         const deposit = await Deposits.updateOne({ userId: payload.userId }, { $push: { amount: payload.amount }, 
-        $inc: { totalDeposit: payload.amount } });
+        $inc: { totalDeposit: payload.amount } }).populate("userId");
         return deposit;
     }
 

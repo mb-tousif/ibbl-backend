@@ -17,5 +17,4 @@ const depositSchema = new Schema<IDeposits>({
   },
 });
 
-
 export const Deposits = model<IDeposits>('Deposits', depositSchema);

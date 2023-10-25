@@ -7,6 +7,10 @@ const depositSchema = new Schema<IDeposits>({
     ref: 'User',
     required: true,
   },
+  accountNo: {
+    type: String,
+    required: true,
+  },
   totalDeposit: {
     type: Number,
     default: 0,

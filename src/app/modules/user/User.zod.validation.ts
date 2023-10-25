@@ -9,7 +9,7 @@ const postValidation = z.object({
     password: z.string({
         required_error: "Password is required"
     }).min(6),
-    accountType: z.enum(["Savings A/C", "Current A/C", "Salary A/C", "Student A/C"]).optional(),
+    accountType: z.enum(["Savings A/C", "Current A/C", "Salary A/C", "Business A/C", "Student A/C"]).optional(),
     accountNo: z.string().optional(),
     NID: z.string().optional(),
     gender: z.enum(["Male", "Female", "Other"], {

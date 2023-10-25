@@ -14,21 +14,21 @@ const createUser = async (payload: TUser) => {
     );
   }
   payload.OTP = await generateOTP();
-  const user = await User.create(payload);
   const session = await mongoose.startSession();
   try {
+    const user = await User.create(payload);
     session.startTransaction();
-   await EmailService.sendOTPCode(
-       payload?.name?.firstName,
-       payload?.email,
-       user?.OTP as number
-    );
+    await EmailService.sendOTPCode(
+      payload?.name?.firstName,
+      payload?.email,
+      user?.OTP as number
+      );
+    return user;
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
     throw error;
   }
-  return user;
 };
 
 export const UserService = {

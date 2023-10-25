@@ -1,7 +1,7 @@
-# This project is for Painting Booking and Management Service
+# This project is for <em>Investment Bank of Bangladesh Ltd ( IBBL )</em>
 
 ## Description
-<p>This project is for <em>Investment Bank of Bangladesh Ltd ( IBBL )</em> which is bank website provides online banking services, account management, fund transfers, bill payments, and account information. It typically features security measures, customer support, loan and investment information, branch locators, and resources for financial education and services.</p>
+<p>A bank website provides online banking services, account management, fund transfers, bill payments, and account information. It typically features security measures, customer support, loan and investment information, branch locators, and resources for financial education and services.</p>
 
 <!-- ### This project [Live Site](https://painting-service-roan.vercel.app/) -->
 

@@ -5,7 +5,7 @@ const getLastUserAccount = async () => {
     {
       role: "account_holder",
     },
-    { id: 1, _id: 0 }
+    { accountNo: 1, _id: 0 }
   )
     .sort({ createdAt: -1 })
     .lean();

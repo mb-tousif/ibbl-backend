@@ -20,7 +20,7 @@ const userSchema = new Schema<TUser>(
     },
     accountType: {
       type: String,
-      enum: ["Savings A/C","Not Chosen", "Current A/C", "Salary A/C", "Student A/C"],
+      enum: ["Savings A/C","Not Chosen", "Current A/C", "Salary A/C", "Student A/C", "Business A/C"],
       default: "Not Chosen",
     },
     img: {

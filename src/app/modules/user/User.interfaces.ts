@@ -8,6 +8,7 @@ export type TAccountType =
   | "Salary A/C"
   | "Student A/C"
   | "Not Chosen"
+  | "Business A/C";
 
   export type TOtpPayload = {
     email: string;

@@ -15,6 +15,9 @@ const depositSchema = new Schema<IDeposits>({
     type: [Number],
     required: true,
   },
+},
+{
+  timestamps: true,
 });
 
 export const Deposits = model<IDeposits>('Deposits', depositSchema);

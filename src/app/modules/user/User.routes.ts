@@ -10,4 +10,9 @@ router.post( "/create-user",
     UserController.createUser
 )
 
+router.post( "/create-mgt",
+    ValidateRequest(UserValidation.managementPostValidation), 
+    UserController.createManagement
+)
+
 export const UserRoutes = router;

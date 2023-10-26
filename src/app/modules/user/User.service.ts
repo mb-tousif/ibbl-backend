@@ -6,6 +6,7 @@ import { generateOTP } from "../../../utils/otpGenerator";
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import httpStatus from "http-status";
 
+// create a new user
 const createUser = async (payload: TUser) => {
   if (payload.role === "admin" || payload.role === "cashier" || payload.role === "manager") {
     throw new ServerAPIError(
@@ -31,6 +32,22 @@ const createUser = async (payload: TUser) => {
   }
 };
 
+// create a admin, cashier, manager
+const createManagement = async (payload: TUser) => {
+  if (payload.role === "user") {
+    throw new ServerAPIError(
+      httpStatus.BAD_REQUEST,
+      "This route is not for user"
+    );
+  }
+  payload.OTP = await generateOTP();
+  payload.confirmedAccount = true;
+  payload.status = "Active";
+  const user = await User.create(payload)
+  return user;
+};
+
 export const UserService = {
     createUser,
+    createManagement,
 };

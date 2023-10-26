@@ -13,6 +13,7 @@ const confirmedAccount = async (payload: TOtpPayload) => {
   const user = await User.findOne({ email, OTP });
   if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   user.confirmedAccount = true;
+  user.status = "Active";
   await user.save();
   return user;
 };

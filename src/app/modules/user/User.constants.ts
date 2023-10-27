@@ -5,3 +5,15 @@
     INACTIVE = "Inactive",
     BLOCKED = "Blocked",
 }
+
+export  const userSearchableFields = [ "NID", "accountNo", "email", "contactNo", "role", "status" ];
+
+export const userFilterableFields = [
+  "search",
+  "role",
+  "status",
+  "accountType",
+  "accountNo",
+  "NID",
+  "contactNo",
+];

@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import { EmailService } from "../../../utils/nodemailer";
 import { User } from "./User.schema";
-import { TUser } from "./User.interfaces";
+import { TUser, TUserFilterableFields } from "./User.interfaces";
 import { generateOTP } from "../../../utils/otpGenerator";
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import httpStatus from "http-status";
+import { IPaginationOptions } from "../../../types/paginationType";
 
 // create a new user
 const createUser = async (payload: TUser) => {
@@ -47,7 +48,14 @@ const createManagement = async (payload: TUser) => {
   return user;
 };
 
+// GET all users
+const getAllUsers = async ( options:IPaginationOptions, filters:TUserFilterableFields) => {
+  const users = await User.find();
+  return users;
+};
+
 export const UserService = {
     createUser,
     createManagement,
+    getAllUsers,
 };

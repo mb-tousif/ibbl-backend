@@ -48,3 +48,8 @@ export type UserModel = {
     savedPassword: string
   ): Promise<boolean>;
 } & Model<TUser>;
+
+
+export type TUserFilterableFields = {
+  search?: string;
+}

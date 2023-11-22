@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 const otpValidation = z.object({

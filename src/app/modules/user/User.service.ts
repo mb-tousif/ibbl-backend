@@ -9,7 +9,7 @@ import { IPaginationOptions } from "../../../types/paginationType";
 
 // create a new user
 const createUser = async (payload: TUser) => {
-  if (payload.role === "admin" || payload.role === "cashier" || payload.role === "manager") {
+  if (payload.role === "admin" || payload.role === "cashier" || payload.role === "manager" || payload.role === "CEO") {
     throw new ServerAPIError(
       httpStatus.BAD_REQUEST,
       `You can't create ${payload.role} user`
@@ -25,6 +25,7 @@ const createUser = async (payload: TUser) => {
       payload?.email,
       user?.OTP as number
       );
+    await session.commitTransaction();
     return user;
   } catch (error) {
     await session.abortTransaction();

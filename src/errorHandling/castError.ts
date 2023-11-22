@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { IGenericErrorMessage } from "../types/errorType";
+import httpStatus from "http-status";
 
 const handleCastError = (error: mongoose.Error.CastError) => {
   const errors: IGenericErrorMessage[] = [
@@ -9,7 +10,7 @@ const handleCastError = (error: mongoose.Error.CastError) => {
     },
   ];
 
-  const statusCode = 400;
+  const statusCode = httpStatus.BAD_REQUEST;
   return {
     statusCode,
     message: "Cast Error",

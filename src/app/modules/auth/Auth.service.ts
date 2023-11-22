@@ -21,7 +21,7 @@ const confirmedAccount = async (payload: TOtpPayload) => {
 // login Service
 const loginUser = async (payload: TLoginData) => {
     const isConfirmedUser = await User.findOne({ email: payload.email, confirmedAccount: true });
-    if (!isConfirmedUser) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not confirmed");
+    if (!isConfirmedUser) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not verified");
     const matchPassword = await User.isPasswordMatched(
       payload.password,
       isConfirmedUser?.password as string

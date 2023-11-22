@@ -23,14 +23,7 @@ const postValidation = z.object({
     })
 });
 
-const updateValidation = z.object({
-    body: z.object({
-
-    })
-});
-
 export const AuthValidation = {
     postValidation,
-    updateValidation,
     otpValidation
 }

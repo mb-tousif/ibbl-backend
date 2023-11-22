@@ -50,7 +50,7 @@ const createManagement = async (payload: TUser) => {
 
 // GET all users
 const getAllUsers = async ( options:IPaginationOptions, filters:TUserFilterableFields) => {
-  const users = await User.find();
+  const users = await User.find(filters);
   return users;
 };
 

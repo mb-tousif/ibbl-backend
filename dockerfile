@@ -1,10 +1,11 @@
 FROM node:18.10.0-alpine
+RUN npm install -g nodemon
 
 # Working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package.json
+COPY package.json .
 
 # Install dependencies
 RUN npm install

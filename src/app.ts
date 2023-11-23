@@ -19,7 +19,7 @@ app.use("/api/v1", router);
 //Testing
 app.get("/", (req: Request, res: Response) => {
   res.send(
-    `<h3 style='text-align: center; padding: 20px; color:tomato'>🛢 Welcome to ${config.app_name} API 🔌 </h3>`
+    `<h3 style='text-align: center; padding: 20px; color:green'>🛢 Welcome to ${config.app_name} API 🔌 </h3>`
   );
 });
 

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 import { EmailService } from "../../../utils/nodemailer";
 import { User } from "./User.schema";
 import { TUser, TUserFilterableFields } from "./User.interfaces";
@@ -6,6 +6,8 @@ import { generateOTP } from "../../../utils/otpGenerator";
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import httpStatus from "http-status";
 import { IPaginationOptions } from "../../../types/paginationType";
+import { paginationHelpers } from "../../../shared/paginationHelpers";
+import { userSearchableFields } from "./User.constants";
 
 // create a new user
 const createUser = async (payload: TUser) => {
@@ -50,9 +52,48 @@ const createManagement = async (payload: TUser) => {
 };
 
 // GET all users
-const getAllUsers = async ( options:IPaginationOptions, filters:TUserFilterableFields) => {
-  const users = await User.find(filters);
-  return users;
+const getAllUsers = async (options: IPaginationOptions, filters: TUserFilterableFields) => {
+  const { search, ...filtersData } = filters;
+  const { page, skip, limit, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(options);
+
+  const andConditions = [];
+  if (search) {
+    andConditions.push({
+      $or: userSearchableFields.map((field) => ({
+        [field]: {
+          $regex: search,
+          $options: "i",
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
+
+  // Dynamic  Sort needs  field to  do sorting
+  const sortConditions: { [key: string]: SortOrder } = {};
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+  const users = await User.find(whereConditions).skip(skip).limit(limit);
+  const total = await User.countDocuments(whereConditions);
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: users,
+  };
 };
 
 export const UserService = {

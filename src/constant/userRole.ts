@@ -13,4 +13,8 @@ export enum ENUM_ACCOUNT_TYPE {
     CURRENT = "Current A/C",
     SALARY = "Salary A/C",
     STUDENT = "Student A/C",
+    STAFF = "Staff A/C",
+    BUSINESS = "Business A/C",
+    LOAN = "Loan A/C",
+    FIXED_DEPOSIT = "Fixed Deposit A/C",
 }

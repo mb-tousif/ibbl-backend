@@ -8,7 +8,10 @@ export type TAccountType =
   | "Salary A/C"
   | "Student A/C"
   | "Not Chosen"
-  | "Business A/C";
+  | "Business A/C"
+  | "Loan A/C"
+  | "Fixed Deposit A/C"
+  | "Staff A/C"
 
   export type TOtpPayload = {
     email: string;
@@ -52,4 +55,11 @@ export type UserModel = {
 
 export type TUserFilterableFields = {
   search?: string;
+  role?: TUserRoles;
+  status?: string;
+  email?: string;
+  accountType?: TAccountType;
+  accountNo?: string;
+  contactNo?: string;
+  NID?: string;
 }

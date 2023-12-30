@@ -6,11 +6,12 @@
     BLOCKED = "Blocked",
 }
 
-export  const userSearchableFields = [ "NID", "accountNo", "email", "contactNo", "role", "status" ];
+export  const userSearchableFields = [ "NID", "accountNo", "email" ];
 
 export const userFilterableFields = [
   "search",
   "role",
+  "email",
   "status",
   "accountType",
   "accountNo",

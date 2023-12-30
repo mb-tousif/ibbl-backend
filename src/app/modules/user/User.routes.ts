@@ -7,6 +7,11 @@ import { ENUM_USER_ROLE } from '../../../constant/userRole';
 
 const router = express.Router();
 
+router.get( "/all-users", 
+    Authenticate(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.MANAGER, ENUM_USER_ROLE.CEO), 
+    UserController.getAllUsers
+)
+
 router.post( "/create-user",
     ValidateRequest(UserValidation.postValidation), 
     UserController.createUser

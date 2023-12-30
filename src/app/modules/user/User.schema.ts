@@ -20,12 +20,23 @@ const userSchema = new Schema<TUser>(
     },
     accountType: {
       type: String,
-      enum: ["Savings A/C","Not Chosen", "Current A/C", "Salary A/C", "Student A/C", "Business A/C"],
+      enum: [
+        "Savings A/C",
+        "Not Chosen",
+        "Current A/C",
+        "Salary A/C",
+        "Student A/C",
+        "Business A/C",
+        "Staff A/C",
+        "Loan A/C",
+        "Fixed Deposit A/C",
+      ],
       default: "Not Chosen",
     },
     img: {
       type: String,
-      default: "https://img.freepik.com/premium-vector/young-man-avatar-character_24877-9475.jpg",
+      default:
+        "https://img.freepik.com/premium-vector/young-man-avatar-character_24877-9475.jpg",
     },
     contactNo: {
       type: String,

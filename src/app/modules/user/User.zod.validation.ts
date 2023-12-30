@@ -20,6 +20,9 @@ const managementPostValidation = z.object({
         "Salary A/C",
         "Business A/C",
         "Student A/C",
+        "Staff A/C",
+        "Loan A/C",
+        "Fixed Deposit A/C",
       ])
       .optional(),
     accountNo: z.string().optional(),
@@ -69,6 +72,8 @@ const postValidation = z.object({
         "Salary A/C",
         "Business A/C",
         "Student A/C",
+        "Loan A/C",
+        "Fixed Deposit A/C",
       ])
       .optional(),
     accountNo: z.string().optional(),

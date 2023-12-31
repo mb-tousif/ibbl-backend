@@ -52,6 +52,7 @@ const managementPostValidation = z.object({
     savings: z.number().optional(),
   }),
 });
+
 const postValidation = z.object({
   body: z.object({
     email: z

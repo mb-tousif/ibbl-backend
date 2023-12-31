@@ -96,8 +96,26 @@ const getAllUsers = async (options: IPaginationOptions, filters: TUserFilterable
   };
 };
 
+// Update user by id
+const updateUserById = async (id: string, payload: Partial<TUser>) => {
+  const isUserExist = await User.findById(id);
+  if (
+    !isUserExist ||
+    isUserExist.role === "admin" ||
+    isUserExist.role === "cashier" ||
+    isUserExist.role === "manager" ||
+    isUserExist.role === "CEO"
+  ) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const updatedUser = (await User.updateOne({ _id: isUserExist._id }, payload));
+  return updatedUser;
+};
+
 export const UserService = {
     createUser,
     createManagement,
     getAllUsers,
+    updateUserById
 };

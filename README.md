@@ -36,14 +36,10 @@ data manipulation
 #### API Endpoints
 
 #### User
-<!-- 
-- [x] Create User `POST /api/v1/auth/signup` [ Only User ]
-- [x] Login User `POST /api/v1/auth/login` [ All users ]
-- [x] Reset User Password `POST /api/v1/auth/reset-password` [ Public Api ]
-- [x] User Refresh Token `POST /api/v1/auth/refresh-token` [ All users ]
-- [x] Get All Users `GET /api/v1/users/all-users` [ Only Admin and Super Admin ]
-- [x] Get User By Id `GET /api/v1/users/profile/:id` [ Only exact user ]
-- [x] Update User By Id `PATCH /api/v1/users/update-profile/:id` [ Only exact user ]
-- [x] Delete User By Id `DELETE /api/v1/users/delete-profile/:id` [ Only Admin and Super Admin ] -->
 
-Happy coding!
+- [x] Get All Users `GET /api/v1/users/all-users` [ Only Admin, Manager and CEO ]
+- [x] Get User By Id `GET /api/v1/users/user/:id` [ Only Admin, Manager and CEO ]
+- [x] Post create User `POST /api/v1/users/create-user` [ All User ]
+- [x] Post create Management `POST /api/v1/users/create-mgt` [ Only Admin, Manager and CEO ]
+- [x] Update User By Id `PATCH /api/v1/users/update-user/:id` [ Only User]
+- [x] Delete User By Id `DELETE /api/v1/users/delete-profile/:id` [ Only Admin and Super Admin ]

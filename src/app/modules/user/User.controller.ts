@@ -47,6 +47,19 @@ const getAllUsers = CatchAsync(async (req: Request, res: Response) => {
     });
 });
 
+// Get a user by id
+const getUserById = CatchAsync(async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const user = await UserService.getUserById(userId);
+
+    sendResponse( res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User fetched successfully",
+        data: user,
+    });
+});
+
 // Update a user by id
 const updateUserById = CatchAsync(async (req: Request, res: Response) => {
     const userId = req.params.id;
@@ -61,9 +74,24 @@ const updateUserById = CatchAsync(async (req: Request, res: Response) => {
     });
 });
 
+// delete a user by id
+const deleteUserById = CatchAsync(async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const user = await UserService.deleteUserById(userId);
+
+    sendResponse( res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User deleted successfully",
+        data: user,
+    });
+});
+
 export const UserController = {
     createUser,
     createManagement,
     getAllUsers,
+    getUserById,
     updateUserById,
+    deleteUserById,
 };

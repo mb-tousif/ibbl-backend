@@ -84,7 +84,10 @@ const getAllUsers = async (options: IPaginationOptions, filters: TUserFilterable
   }
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  const users = await User.find(whereConditions).skip(skip).limit(limit);
+  const users = await User.find(whereConditions)
+    .skip(skip)
+    .limit(limit)
+    .select("-password");
   const total = await User.countDocuments(whereConditions);
   return {
     meta: {
@@ -95,6 +98,15 @@ const getAllUsers = async (options: IPaginationOptions, filters: TUserFilterable
     data: users,
   };
 };
+
+// Get user by id
+const getUserById = async (id: string) => {
+  const user = await User.findById(id).select("-password");
+  if (!user) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
+  }
+  return user;
+}
 
 // Update user by id
 const updateUserById = async (id: string, payload: Partial<TUser>) => {
@@ -109,13 +121,27 @@ const updateUserById = async (id: string, payload: Partial<TUser>) => {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
 
-  const updatedUser = (await User.updateOne({ _id: isUserExist._id }, payload));
+  const updatedUser = await User.findByIdAndUpdate({ _id: isUserExist._id }, payload,{ new: true }).select("-password");
   return updatedUser;
 };
+
+// delete user by id
+const deleteUserById = async (id: string) => {
+  const isUserExist = await User.findById(id);
+  if (
+    !isUserExist) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const deletedUser = await User.findByIdAndDelete({ _id: isUserExist._id });
+  return deletedUser;
+}
 
 export const UserService = {
     createUser,
     createManagement,
     getAllUsers,
-    updateUserById
+    getUserById,
+    updateUserById,
+    deleteUserById
 };

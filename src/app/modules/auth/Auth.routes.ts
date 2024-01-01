@@ -11,7 +11,7 @@ router.post( "/verify-otp",
 )
 
 router.post("/login", 
-    ValidateRequest(AuthValidation.postValidation),
+    ValidateRequest(AuthValidation.loginValidation),
     AuthController.loginUser
 )
 

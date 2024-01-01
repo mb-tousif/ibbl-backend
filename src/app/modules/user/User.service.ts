@@ -123,6 +123,7 @@ const updateUserById = async (id: string, payload: Partial<TUser>) => {
 
   const { name, ...rest } = payload;
   const restData:Partial<TUser> = {...rest};
+  
   if (name && Object.keys(name).length >0) {
     Object.keys(name).forEach((key) => {
       const nameKey = `name.${key}`;

@@ -11,7 +11,7 @@ const otpValidation = z.object({
     })
 });
 
-const postValidation = z.object({
+const loginValidation = z.object({
     body: z.object({
         email: z.string({
             required_error: "Email is required"
@@ -23,6 +23,6 @@ const postValidation = z.object({
 });
 
 export const AuthValidation = {
-    postValidation,
+    loginValidation,
     otpValidation
 }

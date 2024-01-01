@@ -100,13 +100,13 @@ const getAllUsers = async (options: IPaginationOptions, filters: TUserFilterable
 };
 
 // Get user by id
-const getUserById = async (id: string) => {
+const getUserById = async (id: string): Promise<Partial<TUser | null>> => {
   const user = await User.findById(id).select("-password");
   if (!user) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
   return user;
-}
+};
 
 // Update user by id
 const updateUserById = async (id: string, payload: Partial<TUser>) => {
@@ -121,7 +121,17 @@ const updateUserById = async (id: string, payload: Partial<TUser>) => {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
 
-  const updatedUser = await User.findByIdAndUpdate({ _id: isUserExist._id }, payload,{ new: true }).select("-password");
+  const { name, ...rest } = payload;
+  const restData:Partial<TUser> = {...rest};
+  if (name && Object.keys(name).length >0) {
+    Object.keys(name).forEach((key) => {
+      const nameKey = `name.${key}`;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (restData as any)[nameKey] = (name as any)[key];
+    });
+  }
+
+  const updatedUser = await User.findByIdAndUpdate({ _id: isUserExist._id }, restData,{ new: true }).select("-password");
   return updatedUser;
 };
 

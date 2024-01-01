@@ -46,7 +46,7 @@ router.post(
 
 router.patch(
   "/update-user/:id",
-  Authenticate(ENUM_USER_ROLE.USER),
+  // Authenticate(ENUM_USER_ROLE.USER),
   UserController.updateUserById
 );
 

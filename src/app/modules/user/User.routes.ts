@@ -9,11 +9,11 @@ const router = express.Router();
 
 router.get(
   "/all-users",
-  // Authenticate(
-  //   ENUM_USER_ROLE.ADMIN,
-  //   ENUM_USER_ROLE.MANAGER,
-  //   ENUM_USER_ROLE.CEO
-  // ),
+  Authenticate(
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO
+  ),
   UserController.getAllUsers
 );
 
@@ -47,11 +47,11 @@ router.post(
 router.patch(
   "/open-account",
   ValidateRequest(UserValidation.openAccountValidation),
-  // Authenticate(
-  //   ENUM_USER_ROLE.ADMIN,
-  //   ENUM_USER_ROLE.MANAGER,
-  //   ENUM_USER_ROLE.CEO
-  // ),
+  Authenticate(
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO
+  ),
   UserController.createAccount
 );
 

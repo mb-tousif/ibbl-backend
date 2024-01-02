@@ -1,11 +1,12 @@
 export enum ENUM_USER_ROLE {
-    USER = "user",
-    ADMIN = "admin",
-    CEO = "CEO",
-    CASHIER = "cashier",
-    MANAGER = "manager",
-    DEFAULTER = "defaulter",
-    PREMIUM_USER = "premium_user",
+  USER = "user",
+  ACCOUNT_HOLDER = "account_holder",
+  ADMIN = "admin",
+  CEO = "CEO",
+  CASHIER = "cashier",
+  MANAGER = "manager",
+  DEFAULTER = "defaulter",
+  PREMIUM_USER = "premium_user",
 }
 
 export enum ENUM_ACCOUNT_TYPE {

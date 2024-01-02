@@ -1,13 +1,15 @@
 import mongoose, { SortOrder } from "mongoose";
 import { EmailService } from "../../../utils/nodemailer";
 import { User } from "./User.schema";
-import { TUser, TUserFilterableFields } from "./User.interfaces";
+import { ICreateAccountPayload, TUser, TUserFilterableFields } from "./User.interfaces";
 import { generateOTP } from "../../../utils/otpGenerator";
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import httpStatus from "http-status";
 import { IPaginationOptions } from "../../../types/paginationType";
 import { paginationHelpers } from "../../../shared/paginationHelpers";
 import { userSearchableFields } from "./User.constants";
+import generateUserAccount from "../../../utils/generateAccountNo";
+import { ENUM_USER_ROLE } from "../../../constant/userRole";
 
 // create a new user
 const createUser = async (payload: TUser) => {
@@ -108,15 +110,26 @@ const getUserById = async (id: string): Promise<Partial<TUser | null>> => {
   return user;
 };
 
+const createAccount = async (payload: ICreateAccountPayload) => {
+  const isUserExist = await User.findById(payload.id);
+  if (!isUserExist) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
+  }
+  const accountPayload = payload.accountType.slice(0, 3).toLocaleLowerCase();
+  const accountNo = await generateUserAccount(accountPayload);
+  const user = await User.findByIdAndUpdate(
+    { _id: isUserExist._id },
+    { accountType: payload.accountType, accountNo, role: ENUM_USER_ROLE.ACCOUNT_HOLDER },
+    { new: true }
+  ).select("-password");
+  return user;
+};
+
 // Update user by id
 const updateUserById = async (id: string, payload: Partial<TUser>) => {
   const isUserExist = await User.findById(id);
   if (
-    !isUserExist ||
-    isUserExist.role === "admin" ||
-    isUserExist.role === "cashier" ||
-    isUserExist.role === "manager" ||
-    isUserExist.role === "CEO"
+    !isUserExist
   ) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
@@ -151,6 +164,7 @@ const deleteUserById = async (id: string) => {
 export const UserService = {
     createUser,
     createManagement,
+    createAccount,
     getAllUsers,
     getUserById,
     updateUserById,

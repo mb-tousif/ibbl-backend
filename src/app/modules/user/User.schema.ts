@@ -2,17 +2,32 @@ import { Schema, model } from 'mongoose';
 import { TUser, UserModel } from './User.interfaces';
 import config from '../../../config';
 import bcrypt from 'bcrypt';
+import { ENUM_USER_STATUS } from './User.constants';
+import { ENUM_USER_ROLE } from '../../../constant/userRole';
 
 const userSchema = new Schema<TUser>(
   {
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-    },
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: true,
+    },
+    name: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      middleName: {
+        type: String,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
     },
     accountNo: {
       type: String,
@@ -42,19 +57,6 @@ const userSchema = new Schema<TUser>(
       type: String,
       required: true,
     },
-    name: {
-      firstName: {
-        type: String,
-        required: true,
-      },
-      middleName: {
-        type: String,
-      },
-      lastName: {
-        type: String,
-        required: true,
-      },
-    },
     gender: {
       type: String,
       required: true,
@@ -63,18 +65,19 @@ const userSchema = new Schema<TUser>(
       type: String,
       enum: [
         "user",
-        "defaulter",
         "account_holder",
         "admin",
         "manager",
         "cashier",
+        "CEO",
+        "defaulter",
       ],
-      default: "user",
+      default: ENUM_USER_ROLE.USER,
     },
     status: {
       type: String,
       enum: ["Active", "Inactive", "Pending", "Blocked"],
-      default: "Pending",
+      default: ENUM_USER_STATUS.PENDING,
     },
     OTP: {
       type: Number,

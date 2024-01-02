@@ -1,7 +1,7 @@
 import { Schema, model} from 'mongoose';
-import { IAccountType } from './AccountType.interfaces';
+import { IAccount } from './AccountType.interfaces';
 
-const accountTypeSchema = new Schema<IAccountType>({
+const accountTypeSchema = new Schema<IAccount>({
   userId: { type: String, required: true },
   email: { type: String, required: true },
   accountType: {
@@ -21,4 +21,4 @@ const accountTypeSchema = new Schema<IAccountType>({
 });
 
 // 3. Create a Model.
-export const AccountType = model<IAccountType>('AccountType', accountTypeSchema);
+export const AccountType = model<IAccount>('AccountType', accountTypeSchema);

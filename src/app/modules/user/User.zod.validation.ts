@@ -66,17 +66,6 @@ const postValidation = z.object({
         required_error: "Password is required",
       })
       .min(6),
-    accountType: z
-      .enum([
-        "Savings A/C",
-        "Current A/C",
-        "Salary A/C",
-        "Business A/C",
-        "Student A/C",
-        "Loan A/C",
-        "Fixed Deposit A/C",
-      ])
-      .optional(),
     accountNo: z.string().optional(),
     NID: z.string().optional(),
     gender: z.enum(["Male", "Female", "Other"], {
@@ -93,17 +82,6 @@ const postValidation = z.object({
       middleName: z.string().optional(),
       lastName: z.string().min(2).max(20),
     }),
-    role: z
-      .enum([
-        "admin",
-        "user",
-        "cashier",
-        "manager",
-        "defaulter",
-        "premium_user",
-        "CEO",
-      ])
-      .optional(),
     address: z.string({
       required_error: "Address is required",
     }),
@@ -115,14 +93,10 @@ const postValidation = z.object({
   }),
 });
 
-const updateValidation = z.object({
+const userUpdateValidation = z.object({
   body: z.object({
     email: z.string().email().optional(),
     img: z.string().optional(),
-    password: z.string().min(6).optional(),
-    accountType: z
-      .enum(["Savings A/C", "Current A/C", "Salary A/C", "Student A/C"])
-      .optional(),
     contactNo: z.string().min(11).max(15).optional(),
     name: z.object({
       firstName: z.string().min(2).max(20).optional(),
@@ -130,23 +104,75 @@ const updateValidation = z.object({
       lastName: z.string().min(2).max(20).optional(),
     }),
     NID: z.string().optional(),
+    address: z.string().optional(),
+  }),
+});
+
+const openAccountValidation = z.object({
+  accountNo: z.string().optional(),
+  accountType: z
+    .enum([
+      "Savings A/C",
+      "Current A/C",
+      "Salary A/C",
+      "Student A/C",
+      "Business A/C",
+      "Staff A/C",
+      "Loan A/C",
+      "Fixed Deposit A/C",
+    ])
+    .optional(),
+  role: z
+    .enum([
+      "admin",
+      "user",
+      "cashier",
+      "account_holder",
+      "manager",
+      "defaulter",
+      "CEO",
+    ])
+    .optional(),
+});
+
+const adminUpdateValidation = z.object({
+  body: z.object({
+    accountType: z
+      .enum([
+        "Savings A/C",
+        "Current A/C",
+        "Salary A/C",
+        "Student A/C",
+        "Business A/C",
+        "Staff A/C",
+        "Loan A/C",
+        "Fixed Deposit A/C",
+      ])
+      .optional(),
     role: z
       .enum([
         "admin",
         "user",
         "cashier",
+        "account_holder",
         "manager",
         "defaulter",
-        "premium_user",
         "CEO",
       ])
       .optional(),
-    address: z.string().optional(),
+    status: z.enum(["Active", "Inactive", "Pending", "Blocked"]).optional(),
+    balance: z.number().optional(),
+    deposit: z.number().optional(),
+    income: z.number().optional(),
+    loan: z.number().optional(),
+    savings: z.number().optional(),
   }),
 });
 
 export const UserValidation = {
-    postValidation,
-    updateValidation,
-    managementPostValidation
-}
+  postValidation,
+  userUpdateValidation,
+  adminUpdateValidation,
+  managementPostValidation,
+  openAccountValidation,
+};

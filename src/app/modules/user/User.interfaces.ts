@@ -45,6 +45,11 @@ export type TUser = {
   savings?: number;
 };
 
+export interface ICreateAccountPayload {
+  id: string;
+  accountType: TAccountType;
+}
+
 export type UserModel = {
   isPasswordMatched(
     givenPassword: string,

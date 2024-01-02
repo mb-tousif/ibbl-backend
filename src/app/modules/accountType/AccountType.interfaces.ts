@@ -1,5 +1,5 @@
 
-export interface IAccountType {
+export interface IAccount {
   userId: string;
   email: string;
   accountType: string;

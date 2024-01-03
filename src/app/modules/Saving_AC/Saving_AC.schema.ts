@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IDeposits } from './Deposits.interfaces';
+import { IDeposits } from './Saving_AC.interfaces';
 
 const depositSchema = new Schema<IDeposits>({
   userId: {

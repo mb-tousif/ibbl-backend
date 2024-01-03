@@ -1,5 +1,5 @@
-import { IDeposits } from "./Deposits.interfaces";
-import { Deposits } from "./Deposits.schema";
+import { IDeposits } from "./Saving_AC.interfaces";
+import { Deposits } from "./Saving_AC.schema";
 
 const createDeposit =  async ( payload: IDeposits ) => {
     const isExits = await Deposits.findOne({ userId: payload.userId });

@@ -1,11 +1,11 @@
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import httpStatus from "http-status";
-import { TOtpPayload } from "../user/User.interfaces";
-import { User } from "../user/User.schema";
 import { TLoginData } from "./Auth.interfaces";
 import { Secret } from "jsonwebtoken";
 import config from "../../../config";
 import { jwtHelpers } from "../../../shared/jwtHelper";
+import { TOtpPayload } from "../user/User.interfaces";
+import { User } from "../user/User.schema";
 
 // confirmedAccount by OTP
 const confirmedAccount = async (payload: TOtpPayload) => {

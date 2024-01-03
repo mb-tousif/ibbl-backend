@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
-import { TUser, UserModel } from './User.interfaces';
 import config from '../../../config';
 import bcrypt from 'bcrypt';
-import { ENUM_USER_STATUS } from './User.constants';
 import { ENUM_USER_ROLE } from '../../../constant/userRole';
+import { TUser, UserModel } from './User.interfaces';
+import { ENUM_USER_STATUS } from './User.constants';
 
 const userSchema = new Schema<TUser>(
   {

@@ -43,7 +43,6 @@ data manipulation
 - [x] Post create Management `POST /api/v1/users/create-mgt` [ Only Admin, Manager and CEO ]
 - [x] Update User By Id `PATCH /api/v1/users/update-user/:id` [ Only User]
 - [x] Delete User By Id `DELETE /api/v1/users/delete-profile/:id` [ Only Admin and Super Admin ]
-- [x] Open Account `POST /api/v1/users/open-account` [ Only User ]
 
 #### Auth
 

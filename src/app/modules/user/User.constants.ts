@@ -13,7 +13,6 @@ export const userFilterableFields = [
   "role",
   "email",
   "status",
-  "accountType",
   "accountNo",
   "NID",
   "contactNo",

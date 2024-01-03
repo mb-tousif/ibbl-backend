@@ -45,17 +45,6 @@ router.post(
 );
 
 router.patch(
-  "/open-account",
-  ValidateRequest(UserValidation.openAccountValidation),
-  Authenticate(
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.MANAGER,
-    ENUM_USER_ROLE.CEO
-  ),
-  UserController.createAccount
-);
-
-router.patch(
   "/update-user/:id",
   Authenticate(
     ENUM_USER_ROLE.USER,

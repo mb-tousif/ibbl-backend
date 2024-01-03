@@ -33,18 +33,6 @@ const createManagement = CatchAsync(async (req: Request, res: Response) => {
     });
 });
 
-// create Account for user
-const createAccount = CatchAsync(async (req: Request, res: Response) => {
-    const payload = req.body;
-    const user = await UserService.createAccount(payload);
-
-    sendResponse( res, {
-        statusCode: httpStatus.CREATED,
-        success: true,
-        message: "Account created successfully",
-        data: user,
-    });
-})
 // Get all users
 const getAllUsers = CatchAsync(async (req: Request, res: Response) => {
     const options = handleQuery(req.query, paginationFields);
@@ -102,7 +90,6 @@ const deleteUserById = CatchAsync(async (req: Request, res: Response) => {
 export const UserController = {
     createUser,
     createManagement,
-    createAccount,
     getAllUsers,
     getUserById,
     updateUserById,

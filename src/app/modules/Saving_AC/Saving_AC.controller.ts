@@ -1,21 +1,21 @@
 import { Request, Response } from "express";
 import CatchAsync from "../../../shared/CatchAsync";
-import { DepositsService } from "./Deposits.service";
 import sendResponse from "../../../shared/responseHandler";
 import httpStatus from "http-status";
+import { SavingACService } from "./Saving_AC.service";
 
- const createDeposit = CatchAsync( async ( req: Request, res: Response ) => {
-    const payload = req.body;
-    const deposit = await DepositsService.createDeposit(payload);
+ const createSavingAC = CatchAsync(async (req: Request, res: Response) => {
+   const payload = req.body;
+   const savingAC = await SavingACService.createSavingAC(payload);
 
-    sendResponse( res, {
-        statusCode: httpStatus.CREATED,
-        success: true,
-        message: "Deposit created successfully",
-        data: deposit
-    });
-})
+   sendResponse(res, {
+     statusCode: httpStatus.CREATED,
+     success: true,
+     message: "Saving A/C created successfully",
+     data: savingAC,
+   });
+ });
 
-export const DepositsController = {
-    createDeposit
+export const SavingACController = {
+  createSavingAC,
 };

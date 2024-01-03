@@ -2,31 +2,25 @@ import { z } from "zod";
 
 const managementPostValidation = z.object({
   body: z.object({
+    name: z.object({
+      firstName: z.string().min(2).max(20),
+      middleName: z.string().optional(),
+      lastName: z.string().min(2).max(20),
+    }),
     email: z
       .string({
         required_error: "Email is required",
       })
       .email(),
-    img: z.string().optional(),
     password: z
       .string({
         required_error: "Password is required",
       })
       .min(6),
-    accountType: z
-      .enum([
-        "Savings A/C",
-        "Current A/C",
-        "Salary A/C",
-        "Business A/C",
-        "Student A/C",
-        "Staff A/C",
-        "Loan A/C",
-        "Fixed Deposit A/C",
-      ])
-      .optional(),
-    accountNo: z.string().optional(),
+    img: z.string().optional(),
+    DOB: z.date().optional(),
     NID: z.string().optional(),
+    accountNo: z.string().optional(),
     gender: z.enum(["Male", "Female", "Other"], {
       required_error: "Gender is required",
     }),
@@ -34,40 +28,36 @@ const managementPostValidation = z.object({
       .string({
         required_error: "Contact number is required",
       })
-      .min(11)
+      .min(8)
       .max(20),
-    name: z.object({
-      firstName: z.string().min(2).max(20),
-      middleName: z.string().optional(),
-      lastName: z.string().min(2).max(20),
-    }),
     role: z.enum(["admin", "cashier", "manager", "CEO"]),
     address: z.string({
       required_error: "Address is required",
     }),
-    balance: z.number().optional(),
-    deposit: z.number().optional(),
-    income: z.number().optional(),
-    loan: z.number().optional(),
-    savings: z.number().optional(),
   }),
 });
 
 const postValidation = z.object({
   body: z.object({
+    name: z.object({
+      firstName: z.string().min(2).max(20),
+      middleName: z.string().optional(),
+      lastName: z.string().min(2).max(20),
+    }),
     email: z
       .string({
         required_error: "Email is required",
       })
       .email(),
-    img: z.string().optional(),
     password: z
       .string({
         required_error: "Password is required",
       })
       .min(6),
-    accountNo: z.string().optional(),
+    img: z.string().optional(),
+    DOB: z.date().optional(),
     NID: z.string().optional(),
+    accountNo: z.string().optional(),
     gender: z.enum(["Male", "Female", "Other"], {
       required_error: "Gender is required",
     }),
@@ -75,21 +65,12 @@ const postValidation = z.object({
       .string({
         required_error: "Contact number is required",
       })
-      .min(11)
+      .min(8)
       .max(20),
-    name: z.object({
-      firstName: z.string().min(2).max(20),
-      middleName: z.string().optional(),
-      lastName: z.string().min(2).max(20),
-    }),
+    role: z.enum(["user", "defaulter", "account_holder"]),
     address: z.string({
       required_error: "Address is required",
     }),
-    balance: z.number().optional(),
-    deposit: z.number().optional(),
-    income: z.number().optional(),
-    loan: z.number().optional(),
-    savings: z.number().optional(),
   }),
 });
 

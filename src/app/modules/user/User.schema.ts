@@ -7,11 +7,6 @@ import { ENUM_USER_STATUS } from './User.constants';
 
 const userSchema = new Schema<TUser>(
   {
-    email: {
-      type: String,
-      required: [true, "Email is required"],
-      unique: true,
-    },
     name: {
       firstName: {
         type: String,
@@ -25,28 +20,23 @@ const userSchema = new Schema<TUser>(
         required: true,
       },
     },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+    },
     password: {
       type: String,
       required: [true, "Password is required"],
     },
+    DOB: {
+      type: Date,
+      required: true,
+    },
     accountNo: {
       type: String,
       default: "Not Assigned",
-    },
-    accountType: {
-      type: String,
-      enum: [
-        "Savings A/C",
-        "Not Chosen",
-        "Current A/C",
-        "Salary A/C",
-        "Student A/C",
-        "Business A/C",
-        "Staff A/C",
-        "Loan A/C",
-        "Fixed Deposit A/C",
-      ],
-      default: "Not Chosen",
+      unique: true,
     },
     img: {
       type: String,
@@ -94,26 +84,6 @@ const userSchema = new Schema<TUser>(
     address: {
       type: String,
       required: true,
-    },
-    balance: {
-      type: Number,
-      default: 0,
-    },
-    income: {
-      type: Number,
-      default: 0,
-    },
-    deposit: {
-      type: Number,
-      default: 0,
-    },
-    loan: {
-      type: Number,
-      default: 0,
-    },
-    savings: {
-      type: Number,
-      default: 0,
     },
   },
   {

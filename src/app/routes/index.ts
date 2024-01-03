@@ -1,8 +1,8 @@
 import express from "express";
 import { UserRoutes } from "../modules/user/User.routes";
 import { AuthRoutes } from "../modules/auth/Auth.routes";
-import { DepositsRoutes } from "../modules/Saving_AC/Saving_AC.routes";
 import { AccountTypeRoutes } from "../modules/accountType/AccountType.routes";
+import { SavingACRoutes } from "../modules/Saving_AC/Saving_AC.routes";
 
 const router = express.Router();
 
@@ -20,8 +20,8 @@ const moduleRoutes = [
     route: AccountTypeRoutes,
   },
   {
-    path: "/deposits",
-    route: DepositsRoutes
+    path: "/saving-ac",
+    route: SavingACRoutes,
   }
 ];
 

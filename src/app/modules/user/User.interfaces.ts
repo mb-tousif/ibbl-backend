@@ -1,17 +1,13 @@
 import { Model } from "mongoose";
 
-export type TUserRoles = "user" | "defaulter" | "premium_user" | "admin" | "cashier" | "manager" | "CEO"
-
-export type TAccountType =
-  | "Savings A/C"
-  | "Current A/C"
-  | "Salary A/C"
-  | "Student A/C"
-  | "Not Chosen"
-  | "Business A/C"
-  | "Loan A/C"
-  | "Fixed Deposit A/C"
-  | "Staff A/C"
+export type TUserRoles =
+  | "user"
+  | "defaulter"
+  | "account_holder"
+  | "admin"
+  | "cashier"
+  | "manager"
+  | "CEO";
 
   export type TOtpPayload = {
     email: string;
@@ -19,18 +15,18 @@ export type TAccountType =
   };
 
 export type TUser = {
-  id: string;
-  email: string;
-  password: string;
-  img?: string;
-  accountType?: TAccountType;
-  accountNo?: string;
-  contactNo: string;
+  id?: string;
   name: {
     firstName: string;
     middleName?: string;
     lastName: string;
   };
+  email: string;
+  password: string;
+  DOB: Date;
+  img?: string;
+  accountNo?: string;
+  contactNo: string;
   gender: string;
   OTP?: number;
   confirmedAccount?: boolean;
@@ -38,17 +34,7 @@ export type TUser = {
   NID: string;
   status?: string;
   address: string;
-  balance?: number;
-  deposit?: number;
-  income?: number;
-  loan?: number;
-  savings?: number;
 };
-
-export interface ICreateAccountPayload {
-  id: string;
-  accountType: TAccountType;
-}
 
 export type UserModel = {
   isPasswordMatched(
@@ -63,7 +49,6 @@ export type TUserFilterableFields = {
   role?: TUserRoles;
   status?: string;
   email?: string;
-  accountType?: TAccountType;
   accountNo?: string;
   contactNo?: string;
   NID?: string;

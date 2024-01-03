@@ -13,7 +13,7 @@ const updateValidation = z.object({
     })
 });
 
-export const Current_ACValidation = {
+export const UsersAccountValidation = {
     postValidation,
     updateValidation
 }

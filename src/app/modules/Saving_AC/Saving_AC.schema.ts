@@ -1,27 +1,41 @@
 import { Schema, model } from 'mongoose';
-import { IDeposits } from './Saving_AC.interfaces';
+import { ISaving } from './Saving_AC.interfaces';
 
-const depositSchema = new Schema<IDeposits>({
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
+const savingACSchema = new Schema<ISaving>(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    accountType: {
+      type: String,
+      default: "Savings A/C",
+    },
+    accountNo: {
+      type: String,
+      required: true,
+    },
+    totalBalance: {
+      type: Number,
+      default: 0,
+    },
+    interest: {
+      type: Number,
+      default: 0,
+    },
+    depositAmount: {
+      type: Number,
+      default: 0,
+    },
+    maturityDate: {
+      type: Date,
+      required: true,
+    },
   },
-  accountNo: {
-    type: String,
-    required: true,
-  },
-  totalDeposit: {
-    type: Number,
-    default: 0,
-  },
-  amount: {
-    type: [Number],
-    required: true,
-  },
-},
-{
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
-export const Deposits = model<IDeposits>('Deposits', depositSchema);
+export const SavingAC = model<ISaving>('SavingAC', savingACSchema);

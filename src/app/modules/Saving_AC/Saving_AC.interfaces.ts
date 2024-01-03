@@ -1,8 +1,12 @@
 import { Types } from "mongoose";
 
-export interface IDeposits {
+export interface ISaving {
+  id?: Types.ObjectId;
   userId: Types.ObjectId;
-  totalDeposit: number;
-  accountNo: string;
-  amount: number[];
+  accountNo?: string;
+  accountType?: string;
+  totalBalance: number;
+  interest?: number;
+  depositAmount: number;
+  maturityDate: Date;
 }

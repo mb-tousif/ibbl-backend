@@ -9,27 +9,27 @@ const postValidation = z.object({
         accountNo : z.string({
             required_error: "Account No is required"
         }),
-        amount : z.number({
-            required_error: "Amount is required"
+        totalBalance : z.number({
+            required_error: "Total Balance is required"
         }),
+        interest : z.number().optional(),
+        depositAmount : z.number({
+            required_error: "Deposit Amount is required"
+        }),
+        maturityDate : z.string().optional(),
     })
 });
 
 const updateValidation = z.object({
     body: z.object({
-        userId : z.string({
-            required_error: "User Id is required"
-        }),
-        accountNo : z.string({
-            required_error: "Account No is required"
-        }).optional(),
-        amount : z.number({
-            required_error: "Amount is required"
-        }),
+        totalBalance : z.number().optional(),
+        interest : z.number().optional(),
+        depositAmount : z.number().optional(),
+        maturityDate : z.string().optional(),
     })
 });
 
-export const DepositsValidation = {
+export const SavingACValidation = {
     postValidation,
     updateValidation
 }

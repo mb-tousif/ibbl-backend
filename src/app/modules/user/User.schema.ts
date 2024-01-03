@@ -30,7 +30,7 @@ const userSchema = new Schema<TUser>(
       required: [true, "Password is required"],
     },
     DOB: {
-      type: Date,
+      type: String,
       required: true,
     },
     accountNo: {
@@ -64,11 +64,6 @@ const userSchema = new Schema<TUser>(
       ],
       default: ENUM_USER_ROLE.USER,
     },
-    status: {
-      type: String,
-      enum: ["Active", "Inactive", "Pending", "Blocked"],
-      default: ENUM_USER_STATUS.PENDING,
-    },
     OTP: {
       type: Number,
       required: true,
@@ -85,6 +80,13 @@ const userSchema = new Schema<TUser>(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["Active", "Inactive", "Pending", "Blocked"],
+      default: ENUM_USER_STATUS.PENDING,
+    },
+    failedLoginAttempts: { type: Number, default: 0 },
+    changePassword: { type: Boolean, default: false },
   },
   {
     timestamps: true,

@@ -4,8 +4,9 @@ import { TLoginData } from "./Auth.interfaces";
 import { Secret } from "jsonwebtoken";
 import config from "../../../config";
 import { jwtHelpers } from "../../../shared/jwtHelper";
-import { TOtpPayload } from "../user/User.interfaces";
+import { TOtpPayload, TUser } from "../user/User.interfaces";
 import { User } from "../user/User.schema";
+import { ENUM_USER_STATUS } from "../user/User.constants";
 
 // confirmedAccount by OTP
 const confirmedAccount = async (payload: TOtpPayload) => {
@@ -20,15 +21,23 @@ const confirmedAccount = async (payload: TOtpPayload) => {
 
 // login Service
 const loginUser = async (payload: TLoginData) => {
-    const isConfirmedUser = await User.findOne({ email: payload.email, confirmedAccount: true });
+    const isConfirmedUser:TUser | null = await User.findOne({ email: payload.email, confirmedAccount: true });
     if (!isConfirmedUser) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not verified");
+    if (isConfirmedUser.status !== ENUM_USER_STATUS.ACTIVE) throw new ServerAPIError(httpStatus.NOT_FOUND, `User is ${isConfirmedUser.status}`);
+
     const matchPassword = await User.isPasswordMatched(
       payload.password,
       isConfirmedUser?.password as string
     );
 
-    if (!matchPassword) {
-      new ServerAPIError(
+      console.log(matchPassword, "matchPassword", payload.password, isConfirmedUser?.password);
+      
+    if(matchPassword === false) {
+      // if password not matched update failedLoginAttempts
+      await User.findByIdAndUpdate(isConfirmedUser._id, {
+        $inc: { failedLoginAttempts: 1 },
+      });
+     throw new ServerAPIError(
         httpStatus.BAD_REQUEST,
         "Password not matched 💥"
       );

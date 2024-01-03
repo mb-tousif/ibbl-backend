@@ -15,7 +15,7 @@ export type TUserRoles =
   };
 
 export type TUser = {
-  id?: string;
+  _id?: string;
   name: {
     firstName: string;
     middleName?: string;
@@ -23,7 +23,7 @@ export type TUser = {
   };
   email: string;
   password: string;
-  DOB: Date;
+  DOB: string;
   img?: string;
   accountNo?: string;
   contactNo: string;
@@ -31,6 +31,8 @@ export type TUser = {
   OTP?: number;
   confirmedAccount?: boolean;
   role: TUserRoles;
+  failedLoginAttempts: number;
+  changePassword: boolean;
   NID: string;
   status?: string;
   address: string;

@@ -18,7 +18,7 @@ const managementPostValidation = z.object({
       })
       .min(6),
     img: z.string().optional(),
-    DOB: z.date().optional(),
+    DOB: z.string().optional(),
     NID: z.string().optional(),
     accountNo: z.string().optional(),
     gender: z.enum(["Male", "Female", "Other"], {
@@ -55,7 +55,7 @@ const postValidation = z.object({
       })
       .min(6),
     img: z.string().optional(),
-    DOB: z.date().optional(),
+    DOB: z.string().optional(),
     NID: z.string().optional(),
     accountNo: z.string().optional(),
     gender: z.enum(["Male", "Female", "Other"], {
@@ -67,7 +67,7 @@ const postValidation = z.object({
       })
       .min(8)
       .max(20),
-    role: z.enum(["user", "defaulter", "account_holder"]),
+    role: z.enum(["user", "defaulter", "account_holder"]).optional(),
     address: z.string({
       required_error: "Address is required",
     }),

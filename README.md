@@ -47,4 +47,6 @@ data manipulation
 #### Auth
 
 - [x] Login `POST /api/v1/auth/login` [ All User ]
-- [x] Verify OTP `POST /api/v1/auth//verify-otp` [ All User ]
+- [x] Verify OTP `POST /api/v1/auth/verify-otp` [ All User ]
+- [x] Forgot Password `POST /api/v1/auth/forgot-password` [ All User ]
+- [x] Reset Password `POST /api/v1/auth/reset-password` [ All User ]

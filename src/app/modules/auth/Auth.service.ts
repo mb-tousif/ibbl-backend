@@ -1,12 +1,14 @@
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import httpStatus from "http-status";
-import { TLoginData } from "./Auth.interfaces";
+import { TLoginData, TResetPassword } from "./Auth.interfaces";
 import { Secret } from "jsonwebtoken";
 import config from "../../../config";
 import { jwtHelpers } from "../../../shared/jwtHelper";
 import { TOtpPayload, TUser } from "../user/User.interfaces";
 import { User } from "../user/User.schema";
 import { ENUM_USER_STATUS } from "../user/User.constants";
+import { generateOTP } from "../../../utils/otpGenerator";
+import { EmailService } from "../../../utils/nodemailer";
 
 // confirmedAccount by OTP
 const confirmedAccount = async (payload: TOtpPayload) => {
@@ -55,7 +57,39 @@ const loginUser = async (payload: TLoginData) => {
     return data;
 }
 
+// changePassword Service
+const forgetPasswordRequest = async (payload:{email: string}) => {
+  const { email } = payload;
+  const user = await User.findOne({ email });
+  if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
+  user.changePassword = false;
+  user.failedLoginAttempts = 0;
+  user.OTP= await generateOTP();
+  const newUser = await user.save();
+  await EmailService.sendOTPCode(
+      newUser?.name?.firstName,
+      newUser?.email,
+      newUser?.OTP as number
+      );
+  return newUser;
+};
+
+// Reset Password Service
+const resetPassword = async (payload: TResetPassword) => {
+  const { email, OTP, password } = payload;
+  const user = await User.findOne({ email, OTP });
+  if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
+  user.confirmedAccount = true;
+  user.changePassword = false;
+  user.failedLoginAttempts = 0;
+  user.password = password;
+  const newUser = await user.save();
+  return newUser;
+}
+
 export const AuthService = {
     confirmedAccount,
     loginUser,
+    forgetPasswordRequest,
+    resetPassword
 };

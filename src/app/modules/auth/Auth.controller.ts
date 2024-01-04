@@ -28,7 +28,35 @@ const loginUser = CatchAsync(async (req: Request, res: Response) => {
     });
 });
 
+// Forget password request
+const forgetPasswordRequest = CatchAsync(
+  async (req: Request, res: Response) => {
+    const payload = req.body;
+    const user = await AuthService.forgetPasswordRequest(payload);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Change your password by confirming OTP",
+      data: user,
+    });
+  }
+);
+
+// Reset password
+const resetPassword = CatchAsync(async (req: Request, res: Response) => {
+    const payload = req.body;
+    const user = await AuthService.resetPassword(payload);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Password reset successfully",
+      data: user,
+    });
+});
+
 export const AuthController = {
-    confirmedAccount,
-    loginUser,
+  confirmedAccount,
+  loginUser,
+  forgetPasswordRequest,
+  resetPassword,
 };

@@ -1,9 +1,9 @@
-import { Schema, model } from 'mongoose';
-import config from '../../../config';
-import bcrypt from 'bcrypt';
-import { ENUM_USER_ROLE } from '../../../constant/userRole';
-import { TUser, UserModel } from './User.interfaces';
-import { ENUM_USER_STATUS } from './User.constants';
+import { Schema, model } from "mongoose";
+import config from "../../../config";
+import bcrypt from "bcrypt";
+import { ENUM_USER_ROLE } from "../../../constant/userRole";
+import { TUser, UserModel } from "./User.interfaces";
+import { ENUM_USER_STATUS } from "./User.constants";
 
 const userSchema = new Schema<TUser>(
   {
@@ -98,10 +98,7 @@ userSchema.pre("save", function (next) {
     return next();
   }
   const password = this.password;
-  const hashedPassword = bcrypt.hashSync(
-    password,
-    Number(config.salt_rounds)
-  );
+  const hashedPassword = bcrypt.hashSync(password, Number(config.salt_rounds));
   this.password = hashedPassword;
   next();
 });

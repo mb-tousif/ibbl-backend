@@ -1,7 +1,7 @@
 import mongoose, { SortOrder } from "mongoose";
 import { EmailService } from "../../../utils/nodemailer";
 import { User } from "./User.schema";
-import {  TUser, TUserFilterableFields } from "./User.interfaces";
+import { TUser, TUserFilterableFields } from "./User.interfaces";
 import { generateOTP } from "../../../utils/otpGenerator";
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import httpStatus from "http-status";
@@ -32,13 +32,13 @@ const createUser = async (payload: TUser) => {
     const user = await User.create(payload);
     await BankSummary.updateOne(
       { _id: config.capital_transactions_key },
-      { $inc: { totalAccountHolder: 1 } }, 
+      { $inc: { totalAccountHolder: 1 } }
     );
     await EmailService.sendOTPCode(
       payload?.name?.firstName,
       payload?.email,
       user?.OTP as number
-      );
+    );
     await session.commitTransaction();
     return user;
   } catch (error) {
@@ -59,7 +59,7 @@ const createManagement = async (payload: TUser) => {
   payload.OTP = await generateOTP();
   payload.confirmedAccount = true;
   payload.status = "Active";
-  const user = await User.create(payload)
+  const user = await User.create(payload);
   await BankSummary.updateOne(
     { _id: config.capital_transactions_key },
     { $inc: { totalAccountHolder: 1 } }
@@ -68,7 +68,10 @@ const createManagement = async (payload: TUser) => {
 };
 
 // GET all users
-const getAllUsers = async (options: IPaginationOptions, filters: TUserFilterableFields) => {
+const getAllUsers = async (
+  options: IPaginationOptions,
+  filters: TUserFilterableFields
+) => {
   const { search, ...filtersData } = filters;
   const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
@@ -142,16 +145,14 @@ const getUserById = async (id: string): Promise<Partial<TUser | null>> => {
 // Update user by id
 const updateUserById = async (id: string, payload: Partial<TUser>) => {
   const isUserExist = await User.findById(id);
-  if (
-    !isUserExist
-  ) {
+  if (!isUserExist) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
 
   const { name, ...rest } = payload;
-  const restData:Partial<TUser> = {...rest};
-  
-  if (name && Object.keys(name).length >0) {
+  const restData: Partial<TUser> = { ...rest };
+
+  if (name && Object.keys(name).length > 0) {
     Object.keys(name).forEach((key) => {
       const nameKey = `name.${key}`;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -159,32 +160,35 @@ const updateUserById = async (id: string, payload: Partial<TUser>) => {
     });
   }
 
-  const updatedUser = await User.findByIdAndUpdate({ _id: isUserExist._id }, restData,{ new: true }).select("-password");
+  const updatedUser = await User.findByIdAndUpdate(
+    { _id: isUserExist._id },
+    restData,
+    { new: true }
+  ).select("-password");
   return updatedUser;
 };
 
 // delete user by id
 const deleteUserById = async (id: string) => {
   const isUserExist = await User.findById(id);
-  if (
-    !isUserExist) {
+  if (!isUserExist) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
 
   const deletedUser = await User.findByIdAndDelete({ _id: isUserExist._id });
-// decrement totalAccountHolder
+  // decrement totalAccountHolder
   await BankSummary.updateOne(
     { _id: config.capital_transactions_key },
     { $inc: { totalAccountHolder: -1 } }
   );
   return deletedUser;
-}
+};
 
 export const UserService = {
-    createUser,
-    createManagement,
-    getAllUsers,
-    getUserById,
-    updateUserById,
-    deleteUserById
+  createUser,
+  createManagement,
+  getAllUsers,
+  getUserById,
+  updateUserById,
+  deleteUserById,
 };

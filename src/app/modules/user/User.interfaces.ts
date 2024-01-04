@@ -9,10 +9,10 @@ export type TUserRoles =
   | "manager"
   | "CEO";
 
-  export type TOtpPayload = {
-    email: string;
-    OTP: number;
-  };
+export type TOtpPayload = {
+  email: string;
+  OTP: number;
+};
 
 export type TUser = {
   _id?: string;
@@ -45,7 +45,6 @@ export type UserModel = {
   ): Promise<boolean>;
 } & Model<TUser>;
 
-
 export type TUserFilterableFields = {
   search?: string;
   role?: TUserRoles;
@@ -54,4 +53,4 @@ export type TUserFilterableFields = {
   accountNo?: string;
   contactNo?: string;
   NID?: string;
-}
+};

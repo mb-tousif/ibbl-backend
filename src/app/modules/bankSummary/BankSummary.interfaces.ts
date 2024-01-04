@@ -1,6 +1,4 @@
 
-// Define your interfaces here
-
 export interface IBankSummary {
   totalAccountHolder: number;
   totalInvestment: number;

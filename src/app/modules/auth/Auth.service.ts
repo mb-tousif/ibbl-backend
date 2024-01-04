@@ -13,7 +13,7 @@ import { EmailService } from "../../../utils/nodemailer";
 // confirmedAccount by OTP
 const confirmedAccount = async (payload: TOtpPayload) => {
   const { email, OTP } = payload;
-  const user = await User.findOne({ email, OTP });
+  const user = await User.findOne({ email, OTP }).select("-password");
   if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   user.confirmedAccount = true;
   user.status = ENUM_USER_STATUS.ACTIVE;
@@ -57,7 +57,7 @@ const loginUser = async (payload: TLoginData) => {
 // changePassword Service
 const forgetPasswordRequest = async (payload:{email: string}) => {
   const { email } = payload;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("-password");
   if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   user.changePassword = false;
   user.failedLoginAttempts = 0;
@@ -74,7 +74,7 @@ const forgetPasswordRequest = async (payload:{email: string}) => {
 // Reset Password Service
 const resetPassword = async (payload: TResetPassword) => {
   const { email, OTP, password } = payload;
-  const user = await User.findOne({ email, OTP });
+  const user = await User.findOne({ email, OTP }).select("-password");
   if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   user.confirmedAccount = true;
   user.changePassword = false;

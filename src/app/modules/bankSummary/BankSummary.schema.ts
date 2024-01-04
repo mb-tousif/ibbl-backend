@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { IBankSummary } from './BankSummary.interfaces';
+import { Schema, model } from "mongoose";
+import { IBankSummary } from "./BankSummary.interfaces";
 
 // 2. Create a Schema corresponding to the document interface.
 const bankSummarySchema = new Schema<IBankSummary>({
@@ -30,4 +30,7 @@ const bankSummarySchema = new Schema<IBankSummary>({
 });
 
 // 3. Create a Model.
-export const BankSummary = model<IBankSummary>('BankSummary', bankSummarySchema);
+export const BankSummary = model<IBankSummary>(
+  "BankSummary",
+  bankSummarySchema
+);

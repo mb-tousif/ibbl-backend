@@ -5,8 +5,11 @@ export interface ISaving {
   userId: Types.ObjectId;
   accountNo?: string;
   accountType?: string;
+  interestRate?: number;
   totalBalance: number;
   interest?: number;
   depositAmount: number;
+  withdrawAmount: number;
   maturityDate: Date;
+  status?: string;
 }

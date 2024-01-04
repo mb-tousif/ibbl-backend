@@ -5,7 +5,7 @@
 
 <!-- ### This project [Live Site](https://painting-service-roan.vercel.app/) -->
 
-### Features
+### Key Features
 
 - [x] Developed multi user Role Based Access Control ( RBAC) system.
 - [x] Implemented CRUD operations like update user, change password by
@@ -15,7 +15,6 @@ completion.
 - [x] Maintained role based Authentication and Authorization with OTP.
 - [x] Integrated mongoose session and aggregation for processing for mongodb
 data manipulation
-
 
 ### Technologies Used
 
@@ -32,6 +31,59 @@ data manipulation
 <!-- <p>
 <img src="./ERD.svg" align="center" width="100%" height="100%" style="border-radius: 30px;">
 </p> -->
+
+### Database Schema
+
+#### User
+
+- id
+- name
+- email
+- password
+- DOB
+- img
+- NID
+- accountNo
+- contactNo
+- gender
+- OTP
+- confirmedAccount
+- role
+- failedLoginAttempts
+- changePassword
+- status
+- address
+- createdAt
+- updatedAt
+
+#### Bank Summary
+
+- id
+- totalAccountHolder
+- totalInvestment
+- totalCredit
+- totalLiability
+- totalCapital
+- totalProfit
+- totalExpense
+
+#### Bank Account
+##### Savings Account (SVG)
+
+- id
+- userId
+- accountType
+- accountNo
+- interestRate
+- totalBalance
+- interest
+- depositAmount
+- withdrawAmount
+- maturityDate
+- status
+- createdAt
+- updatedAt
+
 
 #### API Endpoints
 

@@ -10,11 +10,16 @@ const savingACSchema = new Schema<ISaving>(
     },
     accountType: {
       type: String,
+      enum: ["Savings A/C"],
       default: "Savings A/C",
     },
     accountNo: {
       type: String,
       required: true,
+    },
+    interestRate: {
+      type: Number,
+      default: 5,
     },
     totalBalance: {
       type: Number,
@@ -28,9 +33,18 @@ const savingACSchema = new Schema<ISaving>(
       type: Number,
       default: 0,
     },
+    withdrawAmount: {
+      type: Number,
+      default: 0,
+    },
     maturityDate: {
       type: Date,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ["Active", "Inactive", "Closed"],
+      default: "Active",
     },
   },
   {

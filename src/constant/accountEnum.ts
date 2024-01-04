@@ -15,7 +15,12 @@ export enum ENUM_Account_Type {
   FIXED = "FXD",
   SALARY = "SRY",
   STUDENT = "STD",
+  BUSINESS = "BSN",
+  LOAN = "LON",
+  STAFF = "STF",
 }
+
+export const AccountTypeRef = [ "SavingsAC", "CurrentAC", "SalaryAC", "StudentAC", "NotChosen", "BusinessAC", "LoanAC", "FixedDepositAC", "StaffAC"];
 
 export interface ICreateAccountPayload {
   id: string;

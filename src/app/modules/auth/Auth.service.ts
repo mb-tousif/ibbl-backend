@@ -16,7 +16,7 @@ const confirmedAccount = async (payload: TOtpPayload) => {
   const user = await User.findOne({ email, OTP });
   if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   user.confirmedAccount = true;
-  user.status = "Active";
+  user.status = ENUM_USER_STATUS.ACTIVE;
   await user.save();
   return user;
 };
@@ -31,9 +31,6 @@ const loginUser = async (payload: TLoginData) => {
       payload.password,
       isConfirmedUser?.password as string
     );
-
-      console.log(matchPassword, "matchPassword", payload.password, isConfirmedUser?.password);
-      
     if(matchPassword === false) {
       // if password not matched update failedLoginAttempts
       await User.findByIdAndUpdate(isConfirmedUser._id, {
@@ -81,6 +78,7 @@ const resetPassword = async (payload: TResetPassword) => {
   if (!user) throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   user.confirmedAccount = true;
   user.changePassword = false;
+  user.status = ENUM_USER_STATUS.ACTIVE;
   user.failedLoginAttempts = 0;
   user.password = password;
   const newUser = await user.save();

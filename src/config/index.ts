@@ -9,6 +9,7 @@ export default {
   database_url: process.env.DATABASE_URL,
   salt_rounds: process.env.SALT_ROUNDS,
   app_name: process.env.APP_NAME,
+  capital_transactions_key: process.env.CAPITAL_INVESTMENT_ID,
   jwt: {
     secret: process.env.JWT_SECRET,
     expires_in: process.env.JWT_EXPIRES_IN,

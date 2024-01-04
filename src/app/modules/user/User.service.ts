@@ -9,6 +9,8 @@ import { IPaginationOptions } from "../../../types/paginationType";
 import { paginationHelpers } from "../../../shared/paginationHelpers";
 import { userSearchableFields } from "./User.constants";
 import { ENUM_USER_ROLE } from "../../../constant/userRole";
+import { BankSummary } from "../bankSummary/BankSummary.schema";
+import config from "../../../config";
 
 // create a new user
 const createUser = async (payload: TUser) => {
@@ -25,9 +27,13 @@ const createUser = async (payload: TUser) => {
   }
   payload.OTP = await generateOTP();
   const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     const user = await User.create(payload);
-    session.startTransaction();
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      { $inc: { totalAccountHolder: 1 } }, 
+    );
     await EmailService.sendOTPCode(
       payload?.name?.firstName,
       payload?.email,
@@ -54,6 +60,10 @@ const createManagement = async (payload: TUser) => {
   payload.confirmedAccount = true;
   payload.status = "Active";
   const user = await User.create(payload)
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    { $inc: { totalAccountHolder: 1 } }
+  );
   return user;
 };
 
@@ -162,6 +172,11 @@ const deleteUserById = async (id: string) => {
   }
 
   const deletedUser = await User.findByIdAndDelete({ _id: isUserExist._id });
+// decrement totalAccountHolder
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    { $inc: { totalAccountHolder: -1 } }
+  );
   return deletedUser;
 }
 

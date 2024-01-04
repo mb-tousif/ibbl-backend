@@ -36,7 +36,6 @@ const userSchema = new Schema<TUser>(
     accountNo: {
       type: String,
       default: "Not Assigned",
-      unique: true,
     },
     img: {
       type: String,

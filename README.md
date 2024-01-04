@@ -87,6 +87,12 @@ data manipulation
 
 #### API Endpoints
 
+#### Bank Summary
+
+- [x] Get Bank Summary `GET /api/v1/bank-main/current-summary` [ Only Admin, Manager and CEO ]
+- [x] Post Bank Capital Transaction `POST /api/v1/bank-main/capital-transactions` [ Only CEO ]
+- [x] Update Bank Statement `PATCH /api/v1/bank-main/update-statement` [ Only CEO ]
+
 #### User
 
 - [x] Get All Users `GET /api/v1/users/all-users` [ Only Admin, Manager and CEO ]

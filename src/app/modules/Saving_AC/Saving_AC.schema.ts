@@ -16,6 +16,11 @@ const savingACSchema = new Schema<ISaving>(
     accountNo: {
       type: String,
       required: true,
+      unique: true,
+    },
+    duration: {
+      type: Number,
+      default: 1,
     },
     interestRate: {
       type: Number,
@@ -38,7 +43,7 @@ const savingACSchema = new Schema<ISaving>(
       default: 0,
     },
     maturityDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     status: {

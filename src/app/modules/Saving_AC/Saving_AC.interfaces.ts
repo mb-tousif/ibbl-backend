@@ -10,6 +10,7 @@ export interface ISaving {
   interest?: number;
   depositAmount: number;
   withdrawAmount: number;
-  maturityDate: Date;
+  duration?: number;
+  maturityDate: string;
   status?: string;
 }

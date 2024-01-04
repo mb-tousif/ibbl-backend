@@ -5,8 +5,7 @@ import httpStatus from "http-status";
 import { SavingACService } from "./Saving_AC.service";
 
  const createSavingAC = CatchAsync(async (req: Request, res: Response) => {
-   const payload = req.body;
-   const savingAC = await SavingACService.createSavingAC(payload);
+   const savingAC = await SavingACService.createSavingAC(req.body);
 
    sendResponse(res, {
      statusCode: httpStatus.CREATED,

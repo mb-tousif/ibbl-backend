@@ -127,21 +127,6 @@ const getUserById = async (id: string): Promise<Partial<TUser | null>> => {
   return user;
 };
 
-// const createAccount = async (payload: ICreateAccountPayload) => {
-//   const isUserExist = await User.findById(payload.id);
-//   if (!isUserExist) {
-//     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
-//   }
-//   const accountPayload = payload.accountType.slice(0, 3).toLocaleLowerCase();
-//   const accountNo = await generateUserAccount(accountPayload);
-//   const user = await User.findByIdAndUpdate(
-//     { _id: isUserExist._id },
-//     { accountType: payload.accountType, accountNo, role: ENUM_USER_ROLE.ACCOUNT_HOLDER },
-//     { new: true }
-//   ).select("-password");
-//   return user;
-// };
-
 // Update user by id
 const updateUserById = async (id: string, payload: Partial<TUser>) => {
   const isUserExist = await User.findById(id);

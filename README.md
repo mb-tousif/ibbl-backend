@@ -108,3 +108,11 @@ data manipulation
 - [x] Verify OTP `POST /api/v1/auth/verify-otp` [ All User ]
 - [x] Forgot Password `POST /api/v1/auth/forgot-password` [ All User ]
 - [x] Reset Password `POST /api/v1/auth/reset-password` [ All User ]
+
+#### Bank Account
+##### Savings Account (SVG)
+
+- [x] Get All Savings Account `GET /api/v1/saving-ac/get-all-savings-ac` [ Only Admin, Manager and CEO ]
+- [x] Get Savings Account By Id `GET /api/v1/saving-ac/get-saving-ac/:id` [ Only Admin, Manager and CEO ]
+- [x] Post create Savings Account `POST /api/v1/saving-ac/create-saving-ac` [ Only User ]
+- [x] Update Savings Account By Id `PATCH /api/v1/saving-ac/update-saving-ac/:id` [ Only User ]

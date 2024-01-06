@@ -6,7 +6,6 @@ export enum ENUM_USER_ROLE {
   CASHIER = "cashier",
   MANAGER = "manager",
   DEFAULTER = "defaulter",
-  PREMIUM_USER = "premium_user",
 }
 
 export enum ENUM_ACCOUNT_TYPE {

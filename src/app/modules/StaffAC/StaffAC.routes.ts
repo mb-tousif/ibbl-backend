@@ -8,7 +8,7 @@ import { StaffACValidation } from "./StaffAC.zod.validation";
 const router = express.Router();
 
 router.get(
-  "/get-all-staff-ac",
+  "/get-all-staffs-ac",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.MANAGER,

@@ -29,6 +29,18 @@ router.get(
   LoanACController.getLoanACById
 );
 
+router.get(
+  "/my-account",
+  Authenticate(
+    ENUM_USER_ROLE.ACCOUNT_HOLDER,
+    ENUM_USER_ROLE.CASHIER,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO,
+    ENUM_USER_ROLE.ADMIN
+  ),
+  LoanACController.getMyAC
+);
+
 router.post(
   "/create-loan-ac",
   Authenticate(

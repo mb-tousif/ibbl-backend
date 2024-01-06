@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import CatchAsync from "../../../shared/CatchAsync";
 import sendResponse from "../../../shared/responseHandler";
@@ -46,11 +47,23 @@ const getSavingACById = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// Get My Saving AC
+const getMyAC = CatchAsync(async (req: Request, res: Response) => {
+  const { _id } = req.user as any;
+  const staffAC = await SavingACService.getMyAC(_id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Your Saving A/C data fetched successfully",
+    data: staffAC,
+  });
+});
+
 // Update Saving AC by id
 const updateSavingACById = CatchAsync(async (req: Request, res: Response) => {
   const savingId = req.params.id;
   const payload = req.body;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { _id, role } = req.user as any;
   if (role === "ACCOUNT_HOLDER") {
     const haveAccount = await SavingAC.findOne({ userId: _id });
@@ -76,5 +89,6 @@ export const SavingACController = {
   createSavingAC,
   getAllSavingAC,
   getSavingACById,
+  getMyAC,
   updateSavingACById,
 };

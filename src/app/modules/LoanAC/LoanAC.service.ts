@@ -91,11 +91,20 @@ const getLoanACById = async (loanACId: string) => {
   return loanAC;
 }
 
+// Get My Loan AC
+const getMyAC = async (userId: string) => {
+  const loanAC = await LoanAC.findOne({ userId }).populate("userId");
+  if (!loanAC) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
+  }
+  return loanAC;
+}
+
 // Update Saving AC by id
 const updateLoanACById = async (loanACId: string, payload: Partial<ILoan>) => {
   const loanAC = await LoanAC.findById(loanACId);
   if (!loanAC) {
-    throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
   }
   if (payload.depositAmount) {
     await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
@@ -111,6 +120,7 @@ export const LoanACService = {
   createLoanAC,
   getAllLoanAC,
   getLoanACById,
+  getMyAC,
   updateLoanACById,
 };
 

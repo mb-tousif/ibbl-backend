@@ -99,6 +99,15 @@ const getSavingACById = async (savingACId: string) => {
   return savingAC;
 }
 
+// get my ac
+const getMyAC = async (userId: string) => {
+  const myAccount = await SavingAC.findOne({ userId }).populate("userId");
+  if (!myAccount) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "You don't have any AC");
+  }
+  return myAccount;
+};
+
 // Update Saving AC by id
 const updateSavingACById = async (savingACId: string, payload: Partial<ISaving>) => {
   const savingAC = await SavingAC.findById(savingACId);
@@ -121,5 +130,6 @@ export const SavingACService = {
   createSavingAC,
   getAllSavingAC,
   getSavingACById,
+  getMyAC,
   updateSavingACById,
 };

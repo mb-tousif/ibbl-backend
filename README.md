@@ -113,14 +113,23 @@ data manipulation
 ##### Savings Account (SVG)
 
 - [x] Get All Savings Account `GET /api/v1/saving-ac/get-all-savings-ac` [ Only Admin, Manager and CEO ]
-- [x] Get Savings Account By Id `GET /api/v1/saving-ac/get-saving-ac/:id` [ Only Admin, Manager and CEO ]
-- [x] Post create Savings Account `POST /api/v1/saving-ac/create-saving-ac` [ Only User ]
-- [x] Update Savings Account By Id `PATCH /api/v1/saving-ac/update-saving-ac/:id` [ Only User ]
+- [x] Get Savings Account By Id `GET /api/v1/saving-ac/get-saving-ac/:id` [ Only Admin, Cashier, Manager and CEO ]
+- [x] Get My Account By Id `GET /api/v1/saving-ac/my-account` [ Account Holder, Manager, Cashier, Admin and CEO]
+- [x] Post create Savings Account `POST /api/v1/saving-ac/create-saving-ac` [ Only Manager, Admin, Cashier and CEO ]
+- [x] Update Savings Account By Id `PATCH /api/v1/saving-ac/update-saving-ac/:id` [ Only Manager, Admin, Cashier and CEO ]
 
 ##### Staff Account (STA)
 
-- [x] Get All Staff Account `GET /api/v1/staff-ac/get-all-staff-ac` [ Only Admin, Manager and CEO ]
+- [x] Get All Staff Account `GET /api/v1/staff-ac/get-all-staffs-ac` [ Only Admin, Manager and CEO ]
 - [x] Get Staff Account By Id `GET /api/v1/staff-ac/get-staff-ac/:id` [ Only Admin, Manager and CEO ]
-- [x] Get My Account By Id `GET /api/v1/staff-ac/my-account` [ Account Holder, Manager, Cahier and CEO]
-- [x] Post create Staff Account `POST /api/v1/staff-ac/create-staff-ac` [ Only User ]
-- [x] Update Staff Account By Id `PATCH /api/v1/staff-ac/update-staff-ac/:id` [ Only User ]
+- [x] Get My Account By Id `GET /api/v1/staff-ac/my-account` [ Account Holder, Manager, Admin, Cashier and CEO]
+- [x] Post create Staff Account `POST /api/v1/staff-ac/create-staff-ac` [ Only Manager, Admin, Cashier and CEO ]
+- [x] Update Staff Account By Id `PATCH /api/v1/staff-ac/update-staff-ac/:id` [ Only Manager, Admin, Cashier and CEO ]
+
+##### Loan Account (LNA)
+
+- [x] Get All Loan Account `GET /api/v1/loan-ac/get-all-loans-ac` [ Only Admin, Manager, Cashier and CEO ]
+- [x] Get Loan Account By Id `GET /api/v1/loan-ac/get-loan-ac/:id` [ Only Admin, Manager, Cashier and CEO ]
+- [x] Get My Account By Id `GET /api/v1/loan-ac/my-account` [ Account Holder, Manager, Admin, Cashier and CEO]
+- [x] Post create Loan Account `POST /api/v1/loan-ac/create-loan-ac` [ Only Manager, Admin, Cashier and CEO ]
+- [x] Update Loan Account By Id `PATCH /api/v1/loan-ac/update-loan-ac/:id` [ Only Manager, Admin, Cashier and CEO ]

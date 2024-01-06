@@ -14,9 +14,6 @@ const postValidation = z.object({
       required_error: "Deposit Amount is required",
     }),
     withdrawAmount: z.number().optional(),
-    company: z.string({
-      required_error: "Company is required",
-    }),
     transaction: z.string().optional(),
   }),
 });

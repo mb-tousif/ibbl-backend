@@ -10,8 +10,8 @@ export interface IStaffAC {
   totalBalance: number;
   interest?: number;
   depositAmount: number;
-  withdrawAmount: number;
-  transaction?: Types.ObjectId[];
+  withdrawAmount?: number;
+  transactionRef?: string | Types.ObjectId;
   company?: string;
   status?: string;
 }

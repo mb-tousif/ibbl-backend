@@ -3,6 +3,10 @@ import { IBankSummary } from "./BankSummary.interfaces";
 
 // 2. Create a Schema corresponding to the document interface.
 const bankSummarySchema = new Schema<IBankSummary>({
+  totalUser: {
+    type: Number,
+    default: 0,
+  },
   totalAccountHolder: {
     type: Number,
     default: 0,
@@ -26,6 +30,10 @@ const bankSummarySchema = new Schema<IBankSummary>({
   totalExpense: {
     type: Number,
     default: 0,
+  },
+  transactionId: {
+    type: Schema.Types.ObjectId,
+    ref: "Transaction",
   },
 });
 

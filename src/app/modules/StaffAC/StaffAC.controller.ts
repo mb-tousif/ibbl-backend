@@ -12,7 +12,8 @@ import {StaffAC} from "./StaffAC.schema";
 import { ENUM_USER_ROLE } from "../../../constant/userRole";
 
  const createStaffAC = CatchAsync(async (req: Request, res: Response) => {
-   const staffAC = await StaffACService.createStaffAC(req.body);
+  const payload = req.body;
+  const staffAC = await StaffACService.createStaffAC(payload);
 
    sendResponse(res, {
      statusCode: httpStatus.CREATED,

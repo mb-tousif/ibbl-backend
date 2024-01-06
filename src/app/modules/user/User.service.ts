@@ -32,7 +32,7 @@ const createUser = async (payload: TUser) => {
     const user = await User.create(payload);
     await BankSummary.updateOne(
       { _id: config.capital_transactions_key },
-      { $inc: { totalAccountHolder: 1 } }
+      { $inc: { totalUser: 1 } }
     );
     await EmailService.sendOTPCode(
       payload?.name?.firstName,
@@ -62,7 +62,7 @@ const createManagement = async (payload: TUser) => {
   const user = await User.create(payload);
   await BankSummary.updateOne(
     { _id: config.capital_transactions_key },
-    { $inc: { totalAccountHolder: 1 } }
+    { $inc: { totalUser: 1 } }
   );
   return user;
 };
@@ -164,7 +164,7 @@ const deleteUserById = async (id: string) => {
   // decrement totalAccountHolder
   await BankSummary.updateOne(
     { _id: config.capital_transactions_key },
-    { $inc: { totalAccountHolder: -1 } }
+    { $inc: { totalUser: -1 } }
   );
   return deletedUser;
 };

@@ -27,7 +27,16 @@ const createSavingAC = async (payload: ISaving) => {
     { _id: isUserExist._id },
     { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER })
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    {
+      $inc: {
+        totalCredit: payload.depositAmount,
+        totalCapital: payload.depositAmount,
+        totalAccountHolder: 1,
+      },
+    }
+  );
   return (await SavingAC.create(payload)).populate("userId");
 };
 

@@ -29,7 +29,7 @@ const createStaffAC = async (payload: IStaffAC) => {
     { _id: isUserExist._id },
     { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER })
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount, totalAccountHolder: 1 } });
   return (await StaffAC.create(payload)).populate("userId");
 };
 

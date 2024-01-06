@@ -20,11 +20,11 @@ const savingACSchema = new Schema<ISaving>(
     },
     duration: {
       type: Number,
-      default: 1,
+      default: 0,
     },
     interestRate: {
       type: Number,
-      default: 5,
+      default: 6,
     },
     totalBalance: {
       type: Number,

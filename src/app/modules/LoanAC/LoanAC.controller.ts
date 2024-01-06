@@ -3,12 +3,12 @@ import { Request, Response } from "express";
 import CatchAsync from "../../../shared/CatchAsync";
 import sendResponse from "../../../shared/responseHandler";
 import httpStatus from "http-status";
-import { LoanACService } from "./Saving_AC.service";
 import { handleQuery } from "../../../shared/handleQuery";
 import { paginationFields } from "../../../types/paginationType";
-import { LoanACFilterFields } from "./Saving_AC.interfaces";
-import { LoanAC } from "./Saving_AC.schema";
 import ServerAPIError from "../../../errorHandling/serverApiError";
+import { LoanACService } from "./LoanAC.service";
+import { LoanACFilterFields } from "./LoanAC.constants";
+import { LoanAC } from "./LoanAC.schema";
 
  const createLoanAC = CatchAsync(async (req: Request, res: Response) => {
    const LoanAC = await LoanACService.createLoanAC(req.body);
@@ -63,13 +63,13 @@ const updateLoanACById = CatchAsync(async (req: Request, res: Response) => {
     }
   }
 
-  const LoanAC = await LoanACService.updateLoanACById(savingId, payload);
+  const loanAC = await LoanACService.updateLoanACById(savingId, payload);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Saving A/C updated successfully",
-    data: LoanAC,
+    data: loanAC,
   });
 });
 

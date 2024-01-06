@@ -19,7 +19,7 @@ router.get(
 
 router.post(
   "/capital-transactions",
-  // Authenticate(ENUM_USER_ROLE.CEO),
+  Authenticate(ENUM_USER_ROLE.CEO),
   ValidateRequest(BankSummaryValidation.dataValidation),
   BankSummaryController.createBank
 );

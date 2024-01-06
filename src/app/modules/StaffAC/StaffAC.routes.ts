@@ -1,4 +1,3 @@
-
 import express from "express";
 import ValidateRequest from "../../middleware/validateZodRequest";
 import Authenticate from "../../middleware/authenticate";
@@ -30,14 +29,26 @@ router.get(
   StaffACController.getStaffACById
 );
 
+router.get(
+  "/my-account",
+  Authenticate(
+    ENUM_USER_ROLE.ACCOUNT_HOLDER,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.CASHIER
+  ),
+  StaffACController.getMyAC
+);
+
 router.post(
   "/create-staff-ac",
-  // Authenticate(
-  //   ENUM_USER_ROLE.CASHIER,
-  //   ENUM_USER_ROLE.MANAGER,
-  //   ENUM_USER_ROLE.CEO,
-  //   ENUM_USER_ROLE.ADMIN
-  // ),
+  Authenticate(
+    ENUM_USER_ROLE.CASHIER,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO,
+    ENUM_USER_ROLE.ADMIN
+  ),
   ValidateRequest(StaffACValidation.postValidation),
   StaffACController.createStaffAC
 );

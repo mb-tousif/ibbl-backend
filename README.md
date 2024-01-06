@@ -121,5 +121,6 @@ data manipulation
 
 - [x] Get All Staff Account `GET /api/v1/staff-ac/get-all-staff-ac` [ Only Admin, Manager and CEO ]
 - [x] Get Staff Account By Id `GET /api/v1/staff-ac/get-staff-ac/:id` [ Only Admin, Manager and CEO ]
+- [x] Get My Account By Id `GET /api/v1/staff-ac/my-account` [ Account Holder, Manager, Cahier and CEO]
 - [x] Post create Staff Account `POST /api/v1/staff-ac/create-staff-ac` [ Only User ]
 - [x] Update Staff Account By Id `PATCH /api/v1/staff-ac/update-staff-ac/:id` [ Only User ]

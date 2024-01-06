@@ -1,8 +1,7 @@
-
 import { Schema, model } from 'mongoose';
-import { ISaving } from './Saving_AC.interfaces';
+import { ILoan } from './LoanAC.interfaces';
 
-const LoanACSchema = new Schema<ISaving>(
+const loanACSchema = new Schema<ILoan>(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -11,8 +10,8 @@ const LoanACSchema = new Schema<ISaving>(
     },
     accountType: {
       type: String,
-      enum: ["Savings A/C"],
-      default: "Savings A/C",
+      enum: ["Loan A/C"],
+      default: "Loan A/C",
     },
     accountNo: {
       type: String,
@@ -25,9 +24,9 @@ const LoanACSchema = new Schema<ISaving>(
     },
     interestRate: {
       type: Number,
-      default: 5,
+      default: 12,
     },
-    totalBalance: {
+    totalLoan: {
       type: Number,
       default: 0,
     },
@@ -47,6 +46,13 @@ const LoanACSchema = new Schema<ISaving>(
       type: String,
       required: true,
     },
+    company: {
+      type: String,
+    },
+    transactionRef: {
+        type: Schema.Types.ObjectId,
+        ref: "Transaction",
+      },
     status: {
       type: String,
       enum: ["Active", "Inactive", "Closed"],
@@ -58,4 +64,4 @@ const LoanACSchema = new Schema<ISaving>(
   }
 );
 
-export const LoanAC = model<ISaving>('LoanAC', LoanACSchema);
+export const LoanAC = model<ILoan>('LoanAC', loanACSchema);

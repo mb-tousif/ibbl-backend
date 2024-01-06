@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 const postValidation = z.object({
@@ -6,23 +5,25 @@ const postValidation = z.object({
     userId: z.string({
       required_error: "User Id is required",
     }),
-    totalBalance: z.number({
-      required_error: "Total Balance is required",
+    totalLoan: z.number({
+      required_error: "Total amount is required",
     }),
     duration: z.number({
-        required_error: "Duration is required",
+      required_error: "Duration is required",
     }),
-    interest: z.number().optional(),
-    depositAmount: z.number({
-      required_error: "Deposit Amount is required",
+    company: z.string({
+      required_error: "Company name is required",
     }),
+    interestRate: z.number().optional(),
+    withdrawAmount: z.number().optional(),
+    depositAmount: z.number().optional(),
     maturityDate: z.string(),
   }),
 });
 
 const updateValidation = z.object({
   body: z.object({
-    totalBalance: z.number().optional(),
+    totalLoan: z.number().optional(),
     interest: z.number().optional(),
     duration: z.number().optional(),
     depositAmount: z.number().optional(),

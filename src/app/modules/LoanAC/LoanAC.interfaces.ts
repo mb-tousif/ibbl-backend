@@ -1,24 +1,22 @@
 
 import { Types } from "mongoose";
 
-export interface ISaving {
+export interface ILoan {
   id?: Types.ObjectId;
   userId: Types.ObjectId;
   accountNo?: string;
   accountType?: string;
   interestRate?: number;
-  totalBalance: number;
+  totalLoan: number;
   interest?: number;
   depositAmount: number;
   withdrawAmount: number;
+  transactionRef?: Types.ObjectId;
+  company?: string;
   duration?: number;
   maturityDate: string;
   status?: string;
 }
-
-export const LoanACSearchFields = ["accountNo", "status", "duration"];
-
-export const LoanACFilterFields = [ "search", "accountNo", "status", "duration", "maturityDate", "interestRate"];
 
 export type TLoanACFilterableFields = {
   search?: string;

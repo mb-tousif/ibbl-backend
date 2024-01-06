@@ -111,8 +111,9 @@ const updateSavingACById = async (savingACId: string, payload: Partial<ISaving>)
   if (payload.withdrawAmount) {
     await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalDebit : payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
   }
-  await SavingAC.findByIdAndUpdate({ _id: savingACId }, payload);
-  return await SavingAC.findById(savingACId).populate("userId");
+  return await SavingAC.findByIdAndUpdate({ _id: savingACId }, payload).populate(
+    "userId"
+  );
 }
 
 

@@ -1,15 +1,14 @@
-
 import express from "express";
 import ValidateRequest from "../../middleware/validateZodRequest";
-import { LoanACValidation } from "./Saving_AC.zod.validation";
-import { LoanACController } from "./Saving_AC.controller";
 import Authenticate from "../../middleware/authenticate";
 import { ENUM_USER_ROLE } from "../../../constant/userRole";
+import { LoanACController } from "./LoanAC.controller";
+import { LoanACValidation } from "./LoanAC.zod.validation";
 
 const router = express.Router();
 
 router.get(
-  "/get-all-savings-ac",
+  "/get-all-loans-ac",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.MANAGER,
@@ -20,7 +19,7 @@ router.get(
 );
 
 router.get(
-  "/get-saving-ac/:id",
+  "/get-loan-ac/:id",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.MANAGER,
@@ -31,7 +30,7 @@ router.get(
 );
 
 router.post(
-  "/create-saving-ac",
+  "/create-loan-ac",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.MANAGER,
@@ -43,7 +42,7 @@ router.post(
 );
 
 router.patch(
-  "/update-saving-ac/:id",
+  "/update-loan-ac/:id",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.ACCOUNT_HOLDER,

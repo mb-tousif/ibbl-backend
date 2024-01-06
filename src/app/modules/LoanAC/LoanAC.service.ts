@@ -1,8 +1,5 @@
-
 import httpStatus from "http-status";
 import ServerAPIError from "../../../errorHandling/serverApiError";
-import { ISaving, LoanACSearchFields, TLoanACFilterableFields } from "./Saving_AC.interfaces";
-import { LoanAC } from "./Saving_AC.schema";
 import { User } from "../user/User.schema";
 import { ENUM_Account_Type } from "../../../constant/accountEnum";
 import generateUserAccount from "../../../utils/generateAccountNo";
@@ -12,23 +9,26 @@ import config from "../../../config";
 import { IPaginationOptions } from "../../../types/paginationType";
 import { paginationHelpers } from "../../../shared/paginationHelpers";
 import { SortOrder } from "mongoose";
+import { ILoan, TLoanACFilterableFields } from "./LoanAC.interfaces";
+import { LoanAC } from "./LoanAC.schema";
+import { LoanACSearchFields } from "./LoanAC.constants";
 
-const createLoanAC = async (payload: ISaving) => {
+const createLoanAC = async (payload: ILoan) => {
   const isUserExist = await User.findById(payload.userId);
   if (!isUserExist) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
   const isAccountExits = await LoanAC.findOne({ userId: payload.userId });
   if (isAccountExits) {
-    throw new ServerAPIError( httpStatus.BAD_REQUEST, "Saving account already exits");
+    throw new ServerAPIError( httpStatus.BAD_REQUEST, "You already have a Loan.");
   }
 
-  const accountNumber = await generateUserAccount( ENUM_Account_Type.SAVING );
+  const accountNumber = await generateUserAccount( ENUM_Account_Type.LOAN );
   await User.findByIdAndUpdate(
     { _id: isUserExist._id },
     { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER })
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalInvestment: payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
   return (await LoanAC.create(payload)).populate("userId");
 };
 
@@ -66,7 +66,7 @@ const getAllLoanAC = async (options: IPaginationOptions, filters:TLoanACFilterab
   }
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  const LoanAC = await LoanAC.find(whereConditions)
+  const loanAC = await LoanAC.find(whereConditions)
     .skip(skip)
     .limit(limit)
     .sort(sortConditions)
@@ -78,23 +78,23 @@ const getAllLoanAC = async (options: IPaginationOptions, filters:TLoanACFilterab
       limit,
       page,
     },
-    data: LoanAC,
+    data: loanAC,
   };
 }
 
 // Get Saving AC by id
-const getLoanACById = async (LoanACId: string) => {
-  const LoanAC = await LoanAC.findById(LoanACId).populate("userId");
-  if (!LoanAC) {
-    throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
+const getLoanACById = async (loanACId: string) => {
+  const loanAC = await LoanAC.findById(loanACId).populate("userId");
+  if (!loanAC) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
   }
-  return LoanAC;
+  return loanAC;
 }
 
 // Update Saving AC by id
-const updateLoanACById = async (LoanACId: string, payload: Partial<ISaving>) => {
-  const LoanAC = await LoanAC.findById(LoanACId);
-  if (!LoanAC) {
+const updateLoanACById = async (loanACId: string, payload: Partial<ILoan>) => {
+  const loanAC = await LoanAC.findById(loanACId);
+  if (!loanAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
   }
   if (payload.depositAmount) {
@@ -103,8 +103,7 @@ const updateLoanACById = async (LoanACId: string, payload: Partial<ISaving>) => 
   if (payload.withdrawAmount) {
     await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalDebit : payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
   }
-  await LoanAC.findByIdAndUpdate({ _id: LoanACId }, payload);
-  return await LoanAC.findById(LoanACId).populate("userId");
+  return await LoanAC.findByIdAndUpdate({ _id: loanACId }, payload).populate("userId");
 }
 
 

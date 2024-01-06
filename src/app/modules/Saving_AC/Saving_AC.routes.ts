@@ -31,12 +31,12 @@ router.get(
 
 router.post(
   "/create-saving-ac",
-  // Authenticate(
-  //   ENUM_USER_ROLE.CASHIER,
-  //   ENUM_USER_ROLE.MANAGER,
-  //   ENUM_USER_ROLE.CEO,
-  //   ENUM_USER_ROLE.ADMIN
-  // ),
+  Authenticate(
+    ENUM_USER_ROLE.CASHIER,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO,
+    ENUM_USER_ROLE.ADMIN
+  ),
   ValidateRequest(SavingACValidation.postValidation),
   SavingACController.createSavingAC
 );

@@ -1,4 +1,3 @@
-
 import httpStatus from "http-status";
 import ServerAPIError from "../../../errorHandling/serverApiError";
 import { User } from "../user/User.schema";
@@ -21,27 +20,40 @@ const createStaffAC = async (payload: IStaffAC) => {
   }
   const isAccountExits = await StaffAC.findOne({ userId: payload.userId });
   if (isAccountExits) {
-    throw new ServerAPIError( httpStatus.BAD_REQUEST, "Account already exits");
+    throw new ServerAPIError(httpStatus.BAD_REQUEST, "Account already exits");
   }
 
-  const accountNumber = await generateUserAccount( ENUM_Account_Type.STAFF );
+  const accountNumber = await generateUserAccount(ENUM_Account_Type.STAFF);
   await User.findByIdAndUpdate(
     { _id: isUserExist._id },
-    { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER })
+    { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER }
+  );
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount, totalAccountHolder: 1 } });
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    {
+      $inc: {
+        totalCredit: payload.depositAmount,
+        totalCapital: payload.depositAmount,
+        totalAccountHolder: 1,
+      },
+    }
+  );
   return (await StaffAC.create(payload)).populate("userId");
 };
 
 // Get all Staff AC
-const getAllStaffAC = async (options: IPaginationOptions, filters:TStaffACFilterableFields ) => {
+const getAllStaffAC = async (
+  options: IPaginationOptions,
+  filters: TStaffACFilterableFields
+) => {
   const { search, ...filtersData } = filters;
   const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
 
   const andConditions = [];
 
-   if (search) {
+  if (search) {
     andConditions.push({
       $or: StaffACSearchFields.map((field) => ({
         [field]: {
@@ -81,7 +93,7 @@ const getAllStaffAC = async (options: IPaginationOptions, filters:TStaffACFilter
     },
     data: staffAC,
   };
-}
+};
 
 // Get Staff AC by id
 const getStaffACById = async (StaffACId: string) => {
@@ -90,29 +102,58 @@ const getStaffACById = async (StaffACId: string) => {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Staff A/C not found");
   }
   return staffAC;
-}
+};
+
+// get my ac
+const getMyAC = async (userId: string) => {
+  const staffAC = await StaffAC.findOne({ userId }).populate("userId");
+  if (!staffAC) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "You don't have any AC");
+  }
+  return staffAC;
+};
 
 // Update Staff AC by id
-const updateStaffACById = async (StaffACId: string, payload: Partial<IStaffAC>) => {
+const updateStaffACById = async (
+  StaffACId: string,
+  payload: Partial<IStaffAC>
+) => {
   const staffAC = await StaffAC.findById(StaffACId);
   if (!staffAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Staff A/C not found");
   }
   if (payload.depositAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalCredit: payload.depositAmount,
+          totalCapital: payload.depositAmount,
+        },
+      }
+    );
   }
   if (payload.withdrawAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalDebit : payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalDebit: payload.withdrawAmount,
+          totalCapital: -payload.withdrawAmount,
+        },
+      }
+    );
   }
-  await StaffAC.findByIdAndUpdate({ _id: StaffACId }, payload);
-  return await StaffAC.findById(StaffACId).populate("userId");
-}
 
+  return await StaffAC.findByIdAndUpdate({ _id: StaffACId }, payload).populate(
+    "userId"
+  );
+};
 
 export const StaffACService = {
   createStaffAC,
   getAllStaffAC,
   getStaffACById,
+  getMyAC,
   updateStaffACById,
 };
-

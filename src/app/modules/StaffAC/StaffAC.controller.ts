@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Request, Response } from "express";
 import CatchAsync from "../../../shared/CatchAsync";
@@ -49,11 +50,23 @@ const getStaffACById = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// get my ac
+const getMyAC = CatchAsync(async (req: Request, res: Response) => {
+  const { _id } = req.user as any;
+  const staffAC = await StaffACService.getMyAC(_id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Staff A/C data fetched successfully",
+    data: staffAC,
+  });
+})
+
 // Update Staff AC by id
 const updateStaffACById = CatchAsync(async (req: Request, res: Response) => {
   const staffId = req.params.id;
   const payload = req.body;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { _id, role } = req.user as any;
   if (role === ENUM_USER_ROLE.ACCOUNT_HOLDER) {
     const haveAccount = await StaffAC.findOne({ userId: _id });
@@ -79,6 +92,7 @@ export const StaffACController = {
   createStaffAC,
   getAllStaffAC,
   getStaffACById,
+  getMyAC,
   updateStaffACById,
 };
 

@@ -59,6 +59,7 @@ data manipulation
 #### Bank Summary
 
 - id
+- totalUser
 - totalAccountHolder
 - totalInvestment
 - totalCredit
@@ -84,6 +85,69 @@ data manipulation
 - createdAt
 - updatedAt
 
+##### Staff Account (STF)
+
+- id
+- userId
+- accountType
+- accountNo
+- interestRate
+- totalBalance
+- interest
+- depositAmount
+- withdrawAmount
+- company
+- duration
+- maturityDate
+- transactionRef
+- status
+- createdAt
+- updatedAt
+
+##### Loan Account (LON)
+
+- id
+- userId
+- accountType
+- accountNo
+- interestRate
+- totalLoan
+- interest
+- depositAmount
+- withdrawAmount
+- duration
+- maturityDate
+- transactionRef
+- status
+- createdAt
+- updatedAt
+
+#### Current Account (CRT)
+
+- id
+- userId
+- accountType
+- accountNo
+- interestRate
+- totalBalance
+- interest
+- depositAmount
+- withdrawAmount
+- company
+- transactionRef
+- status
+- createdAt
+- updatedAt
+
+#### Transaction
+
+- id
+- userId
+- accountNo
+- transactionType
+- amount
+- createdAt
+- updatedAt
 
 #### API Endpoints
 
@@ -118,7 +182,7 @@ data manipulation
 - [x] Post create Savings Account `POST /api/v1/saving-ac/create-saving-ac` [ Only Manager, Admin, Cashier and CEO ]
 - [x] Update Savings Account By Id `PATCH /api/v1/saving-ac/update-saving-ac/:id` [ Only Manager, Admin, Cashier and CEO ]
 
-##### Staff Account (STA)
+##### Staff Account (STF)
 
 - [x] Get All Staff Account `GET /api/v1/staff-ac/get-all-staffs-ac` [ Only Admin, Manager and CEO ]
 - [x] Get Staff Account By Id `GET /api/v1/staff-ac/get-staff-ac/:id` [ Only Admin, Manager and CEO ]
@@ -126,10 +190,18 @@ data manipulation
 - [x] Post create Staff Account `POST /api/v1/staff-ac/create-staff-ac` [ Only Manager, Admin, Cashier and CEO ]
 - [x] Update Staff Account By Id `PATCH /api/v1/staff-ac/update-staff-ac/:id` [ Only Manager, Admin, Cashier and CEO ]
 
-##### Loan Account (LNA)
+##### Loan Account (LON)
 
 - [x] Get All Loan Account `GET /api/v1/loan-ac/get-all-loans-ac` [ Only Admin, Manager, Cashier and CEO ]
 - [x] Get Loan Account By Id `GET /api/v1/loan-ac/get-loan-ac/:id` [ Only Admin, Manager, Cashier and CEO ]
 - [x] Get My Account By Id `GET /api/v1/loan-ac/my-account` [ Account Holder, Manager, Admin, Cashier and CEO]
 - [x] Post create Loan Account `POST /api/v1/loan-ac/create-loan-ac` [ Only Manager, Admin, Cashier and CEO ]
 - [x] Update Loan Account By Id `PATCH /api/v1/loan-ac/update-loan-ac/:id` [ Only Manager, Admin, Cashier and CEO ]
+
+##### Current Account (CRT)
+
+- [x] Get All Current Account `GET /api/v1/current-ac/get-all-currents-ac` [ Only Admin, Manager, Cashier and CEO ]
+- [x] Get Current Account By Id `GET /api/v1/current-ac/get-current-ac/:id` [ Only Admin, Manager, Cashier and CEO ]
+- [x] Get My Account By Id `GET /api/v1/current-ac/my-account` [ Account Holder, Manager, Admin, Cashier and CEO]
+- [x] Post create Current Account `POST /api/v1/current-ac/create-current-ac` [ Only Manager, Admin, Cashier and CEO ]
+- [x] Update Current Account By Id `PATCH /api/v1/current-ac/update-current-ac/:id` [ Only Manager, Admin, Cashier and CEO ]

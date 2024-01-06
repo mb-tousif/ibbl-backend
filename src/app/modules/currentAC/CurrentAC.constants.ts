@@ -1,2 +1,9 @@
+export const CurrentACSearchFields = ["accountNo", "status", "company"];
 
-// Define your constants here
+export const CurrentACFilterFields = [
+  "search",
+  "accountNo",
+  "status",
+  "company",
+  "interestRate",
+];

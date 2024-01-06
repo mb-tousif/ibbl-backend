@@ -1,8 +1,7 @@
-
 import { Schema, model } from 'mongoose';
-import { ISaving } from './Saving_AC.interfaces';
+import { ICurrent } from './CurrentAC.interfaces';
 
-const CurrentACSchema = new Schema<ISaving>(
+const CurrentACSchema = new Schema<ICurrent>(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -11,17 +10,13 @@ const CurrentACSchema = new Schema<ISaving>(
     },
     accountType: {
       type: String,
-      enum: ["Savings A/C"],
-      default: "Savings A/C",
+      enum: ["Current A/C"],
+      default: "Current A/C",
     },
     accountNo: {
       type: String,
       required: true,
       unique: true,
-    },
-    duration: {
-      type: Number,
-      default: 1,
     },
     interestRate: {
       type: Number,
@@ -43,7 +38,13 @@ const CurrentACSchema = new Schema<ISaving>(
       type: Number,
       default: 0,
     },
-    maturityDate: {
+    transactionRef: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Transaction",
+      },
+    ],
+    company: {
       type: String,
       required: true,
     },
@@ -58,4 +59,4 @@ const CurrentACSchema = new Schema<ISaving>(
   }
 );
 
-export const CurrentAC = model<ISaving>('CurrentAC', CurrentACSchema);
+export const CurrentAC = model<ICurrent>('CurrentAC', CurrentACSchema);

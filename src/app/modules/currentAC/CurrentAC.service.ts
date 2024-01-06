@@ -1,8 +1,5 @@
-
 import httpStatus from "http-status";
 import ServerAPIError from "../../../errorHandling/serverApiError";
-import { ISaving, CurrentACSearchFields, TCurrentACFilterableFields } from "./Saving_AC.interfaces";
-import { CurrentAC } from "./Saving_AC.schema";
 import { User } from "../user/User.schema";
 import { ENUM_Account_Type } from "../../../constant/accountEnum";
 import generateUserAccount from "../../../utils/generateAccountNo";
@@ -12,18 +9,21 @@ import config from "../../../config";
 import { IPaginationOptions } from "../../../types/paginationType";
 import { paginationHelpers } from "../../../shared/paginationHelpers";
 import { SortOrder } from "mongoose";
+import { ICurrent, TCurrentACFilterableFields } from "./CurrentAC.interfaces";
+import { CurrentAC } from "./CurrentAC.schema";
+import { CurrentACSearchFields } from "./CurrentAC.constants";
 
-const createCurrentAC = async (payload: ISaving) => {
+const createCurrentAC = async (payload: ICurrent) => {
   const isUserExist = await User.findById(payload.userId);
   if (!isUserExist) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "User not found");
   }
   const isAccountExits = await CurrentAC.findOne({ userId: payload.userId });
   if (isAccountExits) {
-    throw new ServerAPIError( httpStatus.BAD_REQUEST, "Saving account already exits");
+    throw new ServerAPIError( httpStatus.BAD_REQUEST, "Current account already exits");
   }
 
-  const accountNumber = await generateUserAccount( ENUM_Account_Type.SAVING );
+  const accountNumber = await generateUserAccount( ENUM_Account_Type.CURRENT );
   await User.findByIdAndUpdate(
     { _id: isUserExist._id },
     { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER })
@@ -32,7 +32,7 @@ const createCurrentAC = async (payload: ISaving) => {
   return (await CurrentAC.create(payload)).populate("userId");
 };
 
-// Get all Saving AC
+// Get all Current AC
 const getAllCurrentAC = async (options: IPaginationOptions, filters:TCurrentACFilterableFields ) => {
   const { search, ...filtersData } = filters;
   const { page, skip, limit, sortBy, sortOrder } =
@@ -66,7 +66,7 @@ const getAllCurrentAC = async (options: IPaginationOptions, filters:TCurrentACFi
   }
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  const CurrentAC = await CurrentAC.find(whereConditions)
+  const currentAC = await CurrentAC.find(whereConditions)
     .skip(skip)
     .limit(limit)
     .sort(sortConditions)
@@ -78,24 +78,33 @@ const getAllCurrentAC = async (options: IPaginationOptions, filters:TCurrentACFi
       limit,
       page,
     },
-    data: CurrentAC,
+    data: currentAC,
   };
 }
 
-// Get Saving AC by id
+// Get Current AC by id
 const getCurrentACById = async (CurrentACId: string) => {
-  const CurrentAC = await CurrentAC.findById(CurrentACId).populate("userId");
-  if (!CurrentAC) {
-    throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
+  const currentAC = await CurrentAC.findById(CurrentACId).populate("userId");
+  if (!currentAC) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Current A/C not found");
   }
-  return CurrentAC;
+  return currentAC;
+};
+
+// Get My Current AC
+const getMyAC = async (userId: string) => {
+  const myAccount = await CurrentAC.findOne({ userId }).populate("userId");
+  if (!myAccount) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Current A/C not found");
+  }
+  return myAccount;
 }
 
-// Update Saving AC by id
-const updateCurrentACById = async (CurrentACId: string, payload: Partial<ISaving>) => {
-  const CurrentAC = await CurrentAC.findById(CurrentACId);
-  if (!CurrentAC) {
-    throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
+// Update Current AC by id
+const updateCurrentACById = async (CurrentACId: string, payload: Partial<ICurrent>) => {
+  const currentAC = await CurrentAC.findById(CurrentACId);
+  if (!currentAC) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Current A/C not found");
   }
   if (payload.depositAmount) {
     await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
@@ -112,6 +121,7 @@ export const CurrentACService = {
   createCurrentAC,
   getAllCurrentAC,
   getCurrentACById,
+  getMyAC,
   updateCurrentACById,
 };
 

@@ -29,6 +29,8 @@ const updateValidation = z.object({
     depositAmount: z.number().optional(),
     withdrawAmount: z.number().optional(),
     maturityDate: z.string().optional(),
+    company: z.string().optional(),
+    status: z.string().optional(),
   }),
 });
 

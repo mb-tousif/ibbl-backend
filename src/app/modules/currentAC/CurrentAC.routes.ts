@@ -1,15 +1,15 @@
 
 import express from "express";
 import ValidateRequest from "../../middleware/validateZodRequest";
-import { CurrentACValidation } from "./Saving_AC.zod.validation";
-import { CurrentACController } from "./Saving_AC.controller";
 import Authenticate from "../../middleware/authenticate";
 import { ENUM_USER_ROLE } from "../../../constant/userRole";
+import { CurrentACController } from "./CurrentAC.controller";
+import { CurrentACValidation } from "./CurrentAC.zod.validation";
 
 const router = express.Router();
 
 router.get(
-  "/get-all-savings-ac",
+  "/get-all-currents-ac",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.MANAGER,
@@ -20,7 +20,7 @@ router.get(
 );
 
 router.get(
-  "/get-saving-ac/:id",
+  "/get-current-ac/:id",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.MANAGER,
@@ -30,8 +30,20 @@ router.get(
   CurrentACController.getCurrentACById
 );
 
+router.get(
+  "/my-account",
+  Authenticate(
+    ENUM_USER_ROLE.CASHIER,
+    ENUM_USER_ROLE.ACCOUNT_HOLDER,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO,
+    ENUM_USER_ROLE.ADMIN
+  ),
+  CurrentACController.getMyAC
+);
+
 router.post(
-  "/create-saving-ac",
+  "/create-current-ac",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.MANAGER,
@@ -43,7 +55,7 @@ router.post(
 );
 
 router.patch(
-  "/update-saving-ac/:id",
+  "/update-current-ac/:id",
   Authenticate(
     ENUM_USER_ROLE.CASHIER,
     ENUM_USER_ROLE.ACCOUNT_HOLDER,

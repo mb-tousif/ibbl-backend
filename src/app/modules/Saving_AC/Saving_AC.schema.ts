@@ -46,6 +46,12 @@ const savingACSchema = new Schema<ISaving>(
       type: String,
       required: true,
     },
+    transactionRef: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "TransactionAC",
+      },
+    ],
     status: {
       type: String,
       enum: ["Active", "Inactive", "Closed"],

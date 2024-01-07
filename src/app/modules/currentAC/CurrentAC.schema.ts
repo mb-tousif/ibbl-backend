@@ -41,7 +41,7 @@ const CurrentACSchema = new Schema<ICurrent>(
     transactionRef: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Transaction",
+        ref: "TransactionAC",
       },
     ],
     company: {

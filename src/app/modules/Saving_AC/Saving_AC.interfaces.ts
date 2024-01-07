@@ -10,6 +10,7 @@ export interface ISaving {
   interest?: number;
   depositAmount: number;
   withdrawAmount: number;
+  transactionRef?: string | Types.ObjectId[];
   duration?: number;
   maturityDate: string;
   status?: string;

@@ -11,7 +11,7 @@ export interface IStaffAC {
   interest?: number;
   depositAmount: number;
   withdrawAmount?: number;
-  transactionRef?: string | Types.ObjectId;
+  transactionRef?: string | Types.ObjectId[];
   company?: string;
   status?: string;
 }

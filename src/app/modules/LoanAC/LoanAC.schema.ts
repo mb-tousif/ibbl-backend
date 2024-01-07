@@ -49,10 +49,12 @@ const loanACSchema = new Schema<ILoan>(
     company: {
       type: String,
     },
-    transactionRef: {
+    transactionRef: [
+      {
         type: Schema.Types.ObjectId,
-        ref: "Transaction",
+        ref: "TransactionAC",
       },
+    ],
     status: {
       type: String,
       enum: ["Active", "Inactive", "Closed"],

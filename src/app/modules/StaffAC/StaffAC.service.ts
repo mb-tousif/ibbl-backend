@@ -96,7 +96,9 @@ const getAllStaffAC = async (
 
 // Get Staff AC by id
 const getStaffACById = async (StaffACId: string) => {
-  const staffAC = await StaffAC.findById(StaffACId).populate("userId");
+  const staffAC = await StaffAC.findById(StaffACId)
+    .populate("userId")
+    .populate("transactionRef");
   if (!staffAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Staff A/C not found");
   }
@@ -105,7 +107,9 @@ const getStaffACById = async (StaffACId: string) => {
 
 // get my ac
 const getMyAC = async (userId: string) => {
-  const staffAC = await StaffAC.findOne({ userId }).populate("userId");
+  const staffAC = await StaffAC.findOne({ userId })
+    .populate("userId")
+    .populate("transactionRef");
   if (!staffAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "You don't have any AC");
   }
@@ -144,9 +148,9 @@ const updateStaffACById = async (
     );
   }
 
-  return await StaffAC.findByIdAndUpdate({ _id: StaffACId }, payload).populate(
-    "userId"
-  );
+  return await StaffAC.findByIdAndUpdate({ _id: StaffACId }, payload)
+    .populate("userId")
+    .populate("transactionRef");
 };
 
 export const StaffACService = {

@@ -20,33 +20,50 @@ const createCurrentAC = async (payload: ICurrent) => {
   }
   const isAccountExits = await CurrentAC.findOne({ userId: payload.userId });
   if (isAccountExits) {
-    throw new ServerAPIError( httpStatus.BAD_REQUEST, "Current account already exits");
+    throw new ServerAPIError(
+      httpStatus.BAD_REQUEST,
+      "Current account already exits"
+    );
   }
 
-  const accountNumber = await generateUserAccount( ENUM_Account_Type.CURRENT );
+  const accountNumber = await generateUserAccount(ENUM_Account_Type.CURRENT);
   if (isUserExist.role === ENUM_USER_ROLE.USER) {
     await User.findByIdAndUpdate(
-    { _id: isUserExist._id },
-    { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER });
+      { _id: isUserExist._id },
+      { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER }
+    );
   }
   await User.findByIdAndUpdate(
     { _id: isUserExist._id },
     { accountNo: accountNumber }
   );
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount, totalAccountHolder: 1 } });
-  return (await CurrentAC.create(payload)).populate("userId");
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    {
+      $inc: {
+        totalCredit: payload.depositAmount,
+        totalCapital: payload.depositAmount,
+        totalAccountHolder: 1,
+      },
+    }
+  );
+  return (await CurrentAC.create(payload))
+    .populate("userId")
 };
 
 // Get all Current AC
-const getAllCurrentAC = async (options: IPaginationOptions, filters:TCurrentACFilterableFields ) => {
+const getAllCurrentAC = async (
+  options: IPaginationOptions,
+  filters: TCurrentACFilterableFields
+) => {
   const { search, ...filtersData } = filters;
   const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
 
   const andConditions = [];
 
-   if (search) {
+  if (search) {
     andConditions.push({
       $or: CurrentACSearchFields.map((field) => ({
         [field]: {
@@ -86,11 +103,13 @@ const getAllCurrentAC = async (options: IPaginationOptions, filters:TCurrentACFi
     },
     data: currentAC,
   };
-}
+};
 
 // Get Current AC by id
 const getCurrentACById = async (CurrentACId: string) => {
-  const currentAC = await CurrentAC.findById(CurrentACId).populate("userId");
+  const currentAC = await CurrentAC.findById(CurrentACId)
+    .populate("userId")
+    .populate("transactionRef");
   if (!currentAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Current A/C not found");
   }
@@ -99,28 +118,49 @@ const getCurrentACById = async (CurrentACId: string) => {
 
 // Get My Current AC
 const getMyAC = async (userId: string) => {
-  const myAccount = await CurrentAC.findOne({ userId }).populate("userId");
+  const myAccount = await CurrentAC.findOne({ userId })
+    .populate("userId")
+    .populate("transactionRef");
   if (!myAccount) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Current A/C not found");
   }
   return myAccount;
-}
+};
 
 // Update Current AC by id
-const updateCurrentACById = async (CurrentACId: string, payload: Partial<ICurrent>) => {
+const updateCurrentACById = async (
+  CurrentACId: string,
+  payload: Partial<ICurrent>
+) => {
   const currentAC = await CurrentAC.findById(CurrentACId);
   if (!currentAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Current A/C not found");
   }
   if (payload.depositAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalCredit: payload.depositAmount,
+          totalCapital: payload.depositAmount,
+        },
+      }
+    );
   }
   if (payload.withdrawAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalDebit : payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalDebit: payload.withdrawAmount,
+          totalCapital: -payload.withdrawAmount,
+        },
+      }
+    );
   }
   await CurrentAC.findByIdAndUpdate({ _id: CurrentACId }, payload);
   return await CurrentAC.findById(CurrentACId).populate("userId");
-}
+};
 
 export const CurrentACService = {
   createCurrentAC,
@@ -129,4 +169,3 @@ export const CurrentACService = {
   getMyAC,
   updateCurrentACById,
 };
-

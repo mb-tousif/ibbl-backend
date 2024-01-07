@@ -19,7 +19,6 @@ const saveTransaction = CatchAsync(async (req: Request, res: Response) => {
         data: transactionData 
     })
 });
-    
 
 export const TransactionController = {
     saveTransaction

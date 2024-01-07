@@ -43,10 +43,12 @@ const staffACSchema = new Schema<IStaffAC>(
       type: String,
       default: "Infix Bank of Bangladesh Ltd (IBBL)",
     },
-    transactionRef: {
+    transactionRef: [
+      {
         type: Schema.Types.ObjectId,
-        ref: "Transaction",
+        ref: "TransactionAC",
       },
+    ],
     status: {
       type: String,
       enum: ["Active", "Inactive", "Closed"],

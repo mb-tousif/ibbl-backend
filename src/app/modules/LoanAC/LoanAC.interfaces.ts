@@ -11,7 +11,7 @@ export interface ILoan {
   interest?: number;
   depositAmount: number;
   withdrawAmount: number;
-  transactionRef?: Types.ObjectId;
+  transactionRef?: Types.ObjectId | string[];
   company?: string;
   duration?: number;
   maturityDate: string;

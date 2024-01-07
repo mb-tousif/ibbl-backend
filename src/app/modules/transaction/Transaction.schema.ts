@@ -13,7 +13,7 @@ const transactionSchema = new Schema<ITransaction>(
 );
 
 // 3. Create a Model.
-export const Transaction = model<ITransaction>(
-  "Transaction",
+export const TransactionAC = model<ITransaction>(
+  "TransactionAC",
   transactionSchema
 );

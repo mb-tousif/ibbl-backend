@@ -20,10 +20,13 @@ const createLoanAC = async (payload: ILoan) => {
   }
   const isAccountExits = await LoanAC.findOne({ userId: payload.userId });
   if (isAccountExits) {
-    throw new ServerAPIError( httpStatus.BAD_REQUEST, "You already have a Loan.");
+    throw new ServerAPIError(
+      httpStatus.BAD_REQUEST,
+      "You already have a Loan."
+    );
   }
 
-  const accountNumber = await generateUserAccount( ENUM_Account_Type.LOAN );
+  const accountNumber = await generateUserAccount(ENUM_Account_Type.LOAN);
   if (isUserExist.role === ENUM_USER_ROLE.USER) {
     await User.findByIdAndUpdate(
       { _id: isUserExist._id },
@@ -35,19 +38,31 @@ const createLoanAC = async (payload: ILoan) => {
     { accountNo: accountNumber }
   );
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalInvestment: payload.withdrawAmount, totalCapital: -payload.withdrawAmount, totalAccountHolder: 1 } });
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    {
+      $inc: {
+        totalInvestment: payload.withdrawAmount,
+        totalCapital: -payload.withdrawAmount,
+        totalAccountHolder: 1,
+      },
+    }
+  );
   return (await LoanAC.create(payload)).populate("userId");
 };
 
 // Get all Saving AC
-const getAllLoanAC = async (options: IPaginationOptions, filters:TLoanACFilterableFields ) => {
+const getAllLoanAC = async (
+  options: IPaginationOptions,
+  filters: TLoanACFilterableFields
+) => {
   const { search, ...filtersData } = filters;
   const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
 
   const andConditions = [];
 
-   if (search) {
+  if (search) {
     andConditions.push({
       $or: LoanACSearchFields.map((field) => ({
         [field]: {
@@ -87,25 +102,29 @@ const getAllLoanAC = async (options: IPaginationOptions, filters:TLoanACFilterab
     },
     data: loanAC,
   };
-}
+};
 
 // Get Saving AC by id
 const getLoanACById = async (loanACId: string) => {
-  const loanAC = await LoanAC.findById(loanACId).populate("userId");
+  const loanAC = await LoanAC.findById(loanACId)
+    .populate("userId")
+    .populate("transactionRef");
   if (!loanAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
   }
   return loanAC;
-}
+};
 
 // Get My Loan AC
 const getMyAC = async (userId: string) => {
-  const loanAC = await LoanAC.findOne({ userId }).populate("userId");
+  const loanAC = await LoanAC.findOne({ userId })
+    .populate("userId")
+    .populate("transactionRef");
   if (!loanAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
   }
   return loanAC;
-}
+};
 
 // Update Saving AC by id
 const updateLoanACById = async (loanACId: string, payload: Partial<ILoan>) => {
@@ -114,14 +133,31 @@ const updateLoanACById = async (loanACId: string, payload: Partial<ILoan>) => {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
   }
   if (payload.depositAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalCredit: payload.depositAmount,
+          totalCapital: payload.depositAmount,
+        },
+      }
+    );
   }
   if (payload.withdrawAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalDebit : payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalDebit: payload.withdrawAmount,
+          totalCapital: -payload.withdrawAmount,
+        },
+      }
+    );
   }
-  return await LoanAC.findByIdAndUpdate({ _id: loanACId }, payload).populate("userId");
-}
-
+  return await LoanAC.findByIdAndUpdate({ _id: loanACId }, payload)
+    .populate("userId")
+    .populate("transactionRef");
+};
 
 export const LoanACService = {
   createLoanAC,
@@ -130,4 +166,3 @@ export const LoanACService = {
   getMyAC,
   updateLoanACById,
 };
-

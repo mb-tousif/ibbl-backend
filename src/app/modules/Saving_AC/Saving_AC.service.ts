@@ -1,6 +1,10 @@
 import httpStatus from "http-status";
 import ServerAPIError from "../../../errorHandling/serverApiError";
-import { ISaving, SavingACSearchFields, TSavingACFilterableFields } from "./Saving_AC.interfaces";
+import {
+  ISaving,
+  SavingACSearchFields,
+  TSavingACFilterableFields,
+} from "./Saving_AC.interfaces";
 import { SavingAC } from "./Saving_AC.schema";
 import { User } from "../user/User.schema";
 import { ENUM_Account_Type } from "../../../constant/accountEnum";
@@ -19,10 +23,13 @@ const createSavingAC = async (payload: ISaving) => {
   }
   const isAccountExits = await SavingAC.findOne({ userId: payload.userId });
   if (isAccountExits) {
-    throw new ServerAPIError( httpStatus.BAD_REQUEST, "Saving account already exits");
+    throw new ServerAPIError(
+      httpStatus.BAD_REQUEST,
+      "Saving account already exits"
+    );
   }
 
-  const accountNumber = await generateUserAccount( ENUM_Account_Type.SAVING );
+  const accountNumber = await generateUserAccount(ENUM_Account_Type.SAVING);
   if (isUserExist.role === ENUM_USER_ROLE.USER) {
     await User.findByIdAndUpdate(
       { _id: isUserExist._id },
@@ -44,18 +51,21 @@ const createSavingAC = async (payload: ISaving) => {
       },
     }
   );
-  return (await SavingAC.create(payload)).populate("userId");
+  return await (await SavingAC.create(payload)).populate("userId");
 };
 
 // Get all Saving AC
-const getAllSavingAC = async (options: IPaginationOptions, filters:TSavingACFilterableFields ) => {
+const getAllSavingAC = async (
+  options: IPaginationOptions,
+  filters: TSavingACFilterableFields
+) => {
   const { search, ...filtersData } = filters;
   const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
 
   const andConditions = [];
 
-   if (search) {
+  if (search) {
     andConditions.push({
       $or: SavingACSearchFields.map((field) => ({
         [field]: {
@@ -95,20 +105,24 @@ const getAllSavingAC = async (options: IPaginationOptions, filters:TSavingACFilt
     },
     data: savingAC,
   };
-}
+};
 
 // Get Saving AC by id
 const getSavingACById = async (savingACId: string) => {
-  const savingAC = await SavingAC.findById(savingACId).populate("userId");
+  const savingAC = await SavingAC.findById(savingACId)
+    .populate("userId")
+    .populate("transactionRef");
   if (!savingAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
   }
   return savingAC;
-}
+};
 
 // get my ac
 const getMyAC = async (userId: string) => {
-  const myAccount = await SavingAC.findOne({ userId }).populate("userId");
+  const myAccount = await SavingAC.findOne({ userId })
+    .populate("userId")
+    .populate("transactionRef");
   if (!myAccount) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "You don't have any AC");
   }
@@ -116,22 +130,40 @@ const getMyAC = async (userId: string) => {
 };
 
 // Update Saving AC by id
-const updateSavingACById = async (savingACId: string, payload: Partial<ISaving>) => {
+const updateSavingACById = async (
+  savingACId: string,
+  payload: Partial<ISaving>
+) => {
   const savingAC = await SavingAC.findById(savingACId);
   if (!savingAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
   }
   if (payload.depositAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalCredit: payload.depositAmount,
+          totalCapital: payload.depositAmount,
+        },
+      }
+    );
   }
   if (payload.withdrawAmount) {
-    await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalDebit : payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
+    await BankSummary.updateOne(
+      { _id: config.capital_transactions_key },
+      {
+        $inc: {
+          totalDebit: payload.withdrawAmount,
+          totalCapital: -payload.withdrawAmount,
+        },
+      }
+    );
   }
-  return await SavingAC.findByIdAndUpdate({ _id: savingACId }, payload).populate(
-    "userId"
-  );
-}
-
+  return await SavingAC.findByIdAndUpdate({ _id: savingACId }, payload)
+    .populate("userId")
+    .populate("transactionRef");
+};
 
 export const SavingACService = {
   createSavingAC,

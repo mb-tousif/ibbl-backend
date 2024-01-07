@@ -11,9 +11,6 @@ const postValidation = z.object({
     }),
     interest: z.number().optional(),
     withdrawAmount: z.number().optional(),
-    company: z.string({
-      required_error: "Company is required",
-    }),
     depositAmount: z.number({
       required_error: "Deposit Amount is required",
     }),

@@ -24,11 +24,18 @@ const createLoanAC = async (payload: ILoan) => {
   }
 
   const accountNumber = await generateUserAccount( ENUM_Account_Type.LOAN );
+  if (isUserExist.role === ENUM_USER_ROLE.USER) {
+    await User.findByIdAndUpdate(
+      { _id: isUserExist._id },
+      { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER }
+    );
+  }
   await User.findByIdAndUpdate(
     { _id: isUserExist._id },
-    { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER })
+    { accountNo: accountNumber }
+  );
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalInvestment: payload.withdrawAmount, totalCapital: -payload.withdrawAmount } });
+  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalInvestment: payload.withdrawAmount, totalCapital: -payload.withdrawAmount, totalAccountHolder: 1 } });
   return (await LoanAC.create(payload)).populate("userId");
 };
 

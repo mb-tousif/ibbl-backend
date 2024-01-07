@@ -5,6 +5,8 @@ import { SavingACRoutes } from "../modules/Saving_AC/Saving_AC.routes";
 import { BankSummaryRoutes } from "../modules/bankSummary/BankSummary.routes";
 import { StaffACRoutes } from "../modules/StaffAC/StaffAC.routes";
 import { LoanACRoutes } from "../modules/LoanAC/LoanAC.routes";
+import { CurrentACRoutes } from "../modules/currentAC/CurrentAC.routes";
+import { TransactionRoutes } from "../modules/transaction/Transaction.routes";
 
 const router = express.Router();
 
@@ -32,6 +34,14 @@ const moduleRoutes = [
   {
     path: "/loan-ac",
     route: LoanACRoutes,
+  },
+  {
+    path: "/current-ac",
+    route: CurrentACRoutes,
+  },
+  {
+    path: "/transactions",
+    route: TransactionRoutes,
   }
 ];
 

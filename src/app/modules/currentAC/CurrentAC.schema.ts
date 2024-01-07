@@ -46,7 +46,7 @@ const CurrentACSchema = new Schema<ICurrent>(
     ],
     company: {
       type: String,
-      required: true,
+      default: "Personal Account",
     },
     status: {
       type: String,

@@ -24,11 +24,17 @@ const createCurrentAC = async (payload: ICurrent) => {
   }
 
   const accountNumber = await generateUserAccount( ENUM_Account_Type.CURRENT );
+  if (isUserExist.role === ENUM_USER_ROLE.USER) {
+    await User.findByIdAndUpdate(
+    { _id: isUserExist._id },
+    { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER });
+  }
   await User.findByIdAndUpdate(
     { _id: isUserExist._id },
-    { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER })
+    { accountNo: accountNumber }
+  );
   payload.accountNo = accountNumber;
-  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount } });
+  await BankSummary.updateOne( { _id: config.capital_transactions_key }, { $inc: { totalCredit : payload.depositAmount, totalCapital: payload.depositAmount, totalAccountHolder: 1 } });
   return (await CurrentAC.create(payload)).populate("userId");
 };
 
@@ -115,7 +121,6 @@ const updateCurrentACById = async (CurrentACId: string, payload: Partial<ICurren
   await CurrentAC.findByIdAndUpdate({ _id: CurrentACId }, payload);
   return await CurrentAC.findById(CurrentACId).populate("userId");
 }
-
 
 export const CurrentACService = {
   createCurrentAC,

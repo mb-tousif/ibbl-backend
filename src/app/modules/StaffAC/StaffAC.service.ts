@@ -3,7 +3,6 @@ import ServerAPIError from "../../../errorHandling/serverApiError";
 import { User } from "../user/User.schema";
 import { ENUM_Account_Type } from "../../../constant/accountEnum";
 import generateUserAccount from "../../../utils/generateAccountNo";
-import { ENUM_USER_ROLE } from "../../../constant/userRole";
 import { BankSummary } from "../bankSummary/BankSummary.schema";
 import config from "../../../config";
 import { IPaginationOptions } from "../../../types/paginationType";
@@ -26,7 +25,7 @@ const createStaffAC = async (payload: IStaffAC) => {
   const accountNumber = await generateUserAccount(ENUM_Account_Type.STAFF);
   await User.findByIdAndUpdate(
     { _id: isUserExist._id },
-    { accountNo: accountNumber, role: ENUM_USER_ROLE.ACCOUNT_HOLDER }
+    { accountNo: accountNumber }
   );
   payload.accountNo = accountNumber;
   await BankSummary.updateOne(

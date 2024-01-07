@@ -83,7 +83,7 @@ const userUpdateValidation = z.object({
       firstName: z.string().min(2).max(20).optional(),
       middleName: z.string().optional(),
       lastName: z.string().min(2).max(20).optional(),
-    }),
+    }).optional(),
     NID: z.string().optional(),
     address: z.string().optional(),
   }),

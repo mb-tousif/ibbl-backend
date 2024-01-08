@@ -11,7 +11,10 @@ import { CurrentACService } from "./CurrentAC.service";
 import { CurrentAC } from "./CurrentAC.schema";
 
  const createCurrentAC = CatchAsync(async (req: Request, res: Response) => {
-   const CurrentAC = await CurrentACService.createCurrentAC(req.body);
+  const { _id } = req.user as any;
+  const payload = req.body;
+  payload.userId = _id;
+   const CurrentAC = await CurrentACService.createCurrentAC(payload);
 
    sendResponse(res, {
      statusCode: httpStatus.CREATED,

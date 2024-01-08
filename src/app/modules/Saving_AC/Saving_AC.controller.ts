@@ -11,7 +11,10 @@ import { SavingAC } from "./Saving_AC.schema";
 import ServerAPIError from "../../../errorHandling/serverApiError";
 
  const createSavingAC = CatchAsync(async (req: Request, res: Response) => {
-   const savingAC = await SavingACService.createSavingAC(req.body);
+  const { _id } = req.user as any;
+  const payload = req.body;
+  payload.userId = _id;
+   const savingAC = await SavingACService.createSavingAC(payload);
 
    sendResponse(res, {
      statusCode: httpStatus.CREATED,

@@ -15,7 +15,6 @@ async function ConnectServer() {
   try {
     await mongoose.connect(config.database_url as string);
     console.log(`🔌 Database is connected successfully`);
-
     server = app.listen(config.port, () => {
       console.log(`Application listening on port 5000`);
     });

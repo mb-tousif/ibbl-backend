@@ -11,7 +11,10 @@ import { LoanACFilterFields } from "./LoanAC.constants";
 import { LoanAC } from "./LoanAC.schema";
 
  const createLoanAC = CatchAsync(async (req: Request, res: Response) => {
-   const LoanAC = await LoanACService.createLoanAC(req.body);
+  const { _id } = req.user as any;
+  const payload = req.body;
+  payload.userId = _id;
+  const LoanAC = await LoanACService.createLoanAC(payload);
 
    sendResponse(res, {
      statusCode: httpStatus.CREATED,

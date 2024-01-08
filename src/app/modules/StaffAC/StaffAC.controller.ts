@@ -13,7 +13,9 @@ import {StaffAC} from "./StaffAC.schema";
 import { ENUM_USER_ROLE } from "../../../constant/userRole";
 
  const createStaffAC = CatchAsync(async (req: Request, res: Response) => {
+  const { _id } = req.user as any;
   const payload = req.body;
+  payload.userId = _id;
   const staffAC = await StaffACService.createStaffAC(payload);
 
    sendResponse(res, {

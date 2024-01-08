@@ -1,7 +1,9 @@
+import { Types } from "mongoose";
+
 export interface ITransaction {
-    id?: string;
-    userId: string;
-    receiverId: string;
-    amount: number;
-    description: string;
+  id?: string;
+  userId: Types.ObjectId;
+  receiverId: Types.ObjectId;
+  amount: number;
+  description: string;
 }

@@ -143,6 +143,7 @@ data manipulation
 
 - id
 - userId
+- receiverId
 - amount
 - description
 - createdAt
@@ -210,6 +211,6 @@ data manipulation
 - [x] Get All Transactions `GET /api/v1/transactions/all-transactions` [ Only Admin, Manager, Cashier and CEO ]
 - [x] Get Transaction By Id `GET /api/v1/transactions/transaction/:id` [ Only Admin, Manager, Cashier and CEO ]
 - [x] Get My Transactions `GET /api/v1/transactions/my-transactions` [ Account Holder, Manager, Admin, Cashier and CEO]
-- [x] Post create Transaction `POST /api/v1/transactions/create-transaction` [All User]
+- [x] Post create Transaction `POST /api/v1/transactions/save-transaction` [All User]
 - [x] Update Transaction By Id `PATCH /api/v1/transactions/update-transaction/:id` [ Only Admin, Manager, Cashier and CEO ]
 - [x] Delete Transaction By Id `DELETE /api/v1/transactions/delete-transaction/:id` [ Only Admin, Manager, Cashier and CEO ]

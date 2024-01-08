@@ -82,7 +82,8 @@ const getAllStaffAC = async (
     .skip(skip)
     .limit(limit)
     .sort(sortConditions)
-    .populate("userId");
+    .populate("userId")
+    .populate("transactionRef");
   const total = await StaffAC.countDocuments(whereConditions);
   return {
     meta: {

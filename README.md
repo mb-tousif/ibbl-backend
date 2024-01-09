@@ -3,8 +3,6 @@
 ## Description
 <p>A bank website provides online banking services, account management, fund transfers, bill payments, and account information. It typically features security measures, customer support, loan and investment information, branch locators, and resources for financial education and services.</p>
 
-<!-- ### This project [Live Site](https://painting-service-roan.vercel.app/) -->
-
 ### Key Features
 
 - [x] Developed multi user Role Based Access Control ( RBAC) system.
@@ -18,19 +16,14 @@ data manipulation
 
 ### Technologies Used
 
-- [x] Express.js
 - [x] Typescript
+- [x] Express.js
 - [x] MongoDB
 - [x] Mongoose
 - [x] Zod
 - [x] JWT
 - [x] Bcrypt
-
-<!-- ### Entity Relationship Diagram -->
-
-<!-- <p>
-<img src="./ERD.svg" align="center" width="100%" height="100%" style="border-radius: 30px;">
-</p> -->
+- [x] Nodemailer
 
 ### Database Schema
 
@@ -181,6 +174,7 @@ data manipulation
 - [x] Get My Account By Id `GET /api/v1/saving-ac/my-account` [ Account Holder, Manager, Cashier, Admin and CEO]
 - [x] Post create Savings Account `POST /api/v1/saving-ac/create-saving-ac` [ Only Manager, Admin, Cashier and CEO ]
 - [x] Update Savings Account By Id `PATCH /api/v1/saving-ac/update-saving-ac/:id` [ Only Manager, Admin, Cashier and CEO ]
+- [x] Withdraw interest `PATCH /api/v1/saving-ac/withdraw-interest` [ Only Account Holder, Manager, Admin, Cashier and CEO ]
 
 ##### Staff Account (STF)
 

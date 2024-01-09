@@ -20,7 +20,6 @@ const postValidation = z.object({
 
 const updateValidation = z.object({
   body: z.object({
-    totalLoan: z.number().optional(),
     interest: z.number().optional(),
     duration: z.number().optional(),
     depositAmount: z.number().optional(),

@@ -18,16 +18,22 @@ const postValidation = z.object({
 
 const updateValidation = z.object({
   body: z.object({
-    totalBalance: z.number().optional(),
     interest: z.number().optional(),
     duration: z.number().optional(),
-    depositAmount: z.number().optional(),
-    withdrawAmount: z.number().optional(),
     maturityDate: z.string().optional(),
+  }),
+});
+
+const withdrawValidation = z.object({
+  body: z.object({
+    withdrawAmount: z.number({
+      required_error: "Withdraw amount is required",
+    }),
   }),
 });
 
 export const SavingACValidation = {
   postValidation,
   updateValidation,
+  withdrawValidation,
 };

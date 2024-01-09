@@ -138,29 +138,44 @@ const updateSavingACById = async (
   if (!savingAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
   }
-  if (payload.depositAmount) {
-    await BankSummary.updateOne(
-      { _id: config.capital_transactions_key },
-      {
-        $inc: {
-          totalCredit: payload.depositAmount,
-          totalCapital: payload.depositAmount,
-        },
-      }
-    );
+  return await SavingAC.findByIdAndUpdate({ _id: savingACId },payload)
+    .populate("userId")
+    .populate("transactionRef");
+};
+
+// withdraw interest
+const withdrawInterest = async (
+  savingACId: string,
+  payload: number
+) => {
+  const savingAC = await SavingAC.findById(savingACId);
+  if (!savingAC) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Saving A/C not found");
   }
-  if (payload.withdrawAmount) {
-    await BankSummary.updateOne(
-      { _id: config.capital_transactions_key },
-      {
-        $inc: {
-          totalDebit: payload.withdrawAmount,
-          totalCapital: -payload.withdrawAmount,
-        },
-      }
-    );
+  const { interest } = savingAC 
+  if (payload > (interest ?? 0)) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "You don't have enough interest");
   }
-  return await SavingAC.findByIdAndUpdate({ _id: savingACId }, payload)
+  await SavingAC.findByIdAndUpdate(
+    { _id: savingACId },
+    {
+      $inc: {
+        withdrawAmount: payload,
+        totalBalance: -payload,
+        interest: -payload,
+      },
+    }
+  );
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    {
+      $inc: {
+        totalExpense: payload,
+        totalCapital: -payload,
+      },
+    }
+  );
+  return await SavingAC.findById(savingACId)
     .populate("userId")
     .populate("transactionRef");
 };
@@ -171,4 +186,5 @@ export const SavingACService = {
   getSavingACById,
   getMyAC,
   updateSavingACById,
+  withdrawInterest,
 };

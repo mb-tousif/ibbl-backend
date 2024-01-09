@@ -6,9 +6,11 @@ try {
     const savingsAccounts = await SavingAC.find({});
     savingsAccounts.forEach(async (account) => {
         // Calculate interest for each account
-        const interest = (account?.totalBalance * (account?.interestRate ?? 0)) / 100;
+        const savingInterest = Math.ceil(
+          ((account?.depositAmount * (account?.interestRate ?? 0)) / 100) * 365
+        );
         // Update the interest in the database
-        await SavingAC.findByIdAndUpdate(account._id, { interest, $inc: { totalBalance: interest } });
+        await SavingAC.findByIdAndUpdate(account._id, { $inc: { totalBalance: savingInterest, interest: savingInterest } });
         console.log('Interest updated successfully!');
     });
 

@@ -88,10 +88,33 @@ const updateSavingACById = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// withdraw interest
+const withdrawInterest = CatchAsync(async (req: Request, res: Response) => {
+  const { _id } = req.user as any;
+  const account = await SavingAC.findOne({ userId: _id });
+  if (!account) {
+    throw new ServerAPIError(
+      httpStatus.BAD_REQUEST,
+      "You don't have any saving account"
+    );
+  }
+  const savingId = account._id.toString();
+  const payload = req.body;
+  const savingAC = await SavingACService.withdrawInterest(savingId, payload);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Interest withdraw successfully",
+    data: savingAC,
+  });
+});
+
 export const SavingACController = {
   createSavingAC,
   getAllSavingAC,
   getSavingACById,
   getMyAC,
   updateSavingACById,
+  withdrawInterest,
 };

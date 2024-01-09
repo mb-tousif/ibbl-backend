@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 import config from "./config";
 import app from "./app";
 import cron from "node-cron";
-import { updateInterest } from "./shared/updateSavingAC.Interest";
+import { updateSavingInterest } from "./shared/updateSavingAC.Interest";
+import { updateLoanInterest } from "./shared/updateLoanInterest";
 
 process.on("uncaughtException", (error) => {
   console.log(error);
@@ -19,9 +20,12 @@ async function ConnectServer() {
     console.log(`🔌 Database is connected successfully`);
     
     cron.schedule(`0 0 * * *`, () => {
-      updateInterest();
-    }
-    );
+      updateSavingInterest();
+    });
+
+    cron.schedule(`0 0 1 1 *`, () => {
+      updateLoanInterest();
+    });
 
     server = app.listen(config.port, () => {
       console.log(`Application listening on port 5000`);

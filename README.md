@@ -191,6 +191,7 @@ data manipulation
 - [x] Get My Account By Id `GET /api/v1/loan-ac/my-account` [ Account Holder, Manager, Admin, Cashier and CEO]
 - [x] Post create Loan Account `POST /api/v1/loan-ac/create-loan-ac` [ Only Manager, Admin, Cashier and CEO ]
 - [x] Update Loan Account By Id `PATCH /api/v1/loan-ac/update-loan-ac/:id` [ Only Manager, Admin, Cashier and CEO ]
+- [x] Paid Loan `PATCH /api/v1/loan-ac/give-loan/:id` [ Only Account Holder, Manager, Admin, Cashier and CEO ]
 
 ##### Current Account (CRT)
 

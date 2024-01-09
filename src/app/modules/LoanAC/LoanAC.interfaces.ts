@@ -9,8 +9,8 @@ export interface ILoan {
   interestRate?: number;
   totalLoan: number;
   interest?: number;
-  depositAmount: number;
-  withdrawAmount: number;
+  loanAmount: number;
+  paidAmount: number;
   transactionRef?: Types.ObjectId | string[];
   company?: string;
   duration?: number;

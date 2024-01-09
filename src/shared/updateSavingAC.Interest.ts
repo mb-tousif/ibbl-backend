@@ -1,6 +1,6 @@
 import { SavingAC } from "../app/modules/Saving_AC/Saving_AC.schema";
 
-export const updateInterest = async () => {
+export const updateSavingInterest = async () => {
 try {
     // Fetch all savings accounts from the database
     const savingsAccounts = await SavingAC.find({});

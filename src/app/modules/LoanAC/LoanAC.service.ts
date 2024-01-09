@@ -42,8 +42,8 @@ const createLoanAC = async (payload: ILoan) => {
     { _id: config.capital_transactions_key },
     {
       $inc: {
-        totalInvestment: payload.withdrawAmount,
-        totalCapital: -payload.withdrawAmount,
+        totalInvestment: payload.loanAmount,
+        totalCapital: -payload.loanAmount,
         totalAccountHolder: 1,
       },
     }
@@ -132,24 +132,26 @@ const updateLoanACById = async (loanACId: string, payload: Partial<ILoan>) => {
   if (!loanAC) {
     throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
   }
-  if (payload.depositAmount) {
+
+  if (payload.loanAmount) {
     await BankSummary.updateOne(
       { _id: config.capital_transactions_key },
       {
         $inc: {
-          totalCredit: payload.depositAmount,
-          totalCapital: payload.depositAmount,
+          totalCredit: payload.loanAmount,
+          totalCapital: payload.loanAmount,
         },
       }
     );
   }
-  if (payload.withdrawAmount) {
+
+  if (payload.paidAmount) {
     await BankSummary.updateOne(
       { _id: config.capital_transactions_key },
       {
         $inc: {
-          totalDebit: payload.withdrawAmount,
-          totalCapital: -payload.withdrawAmount,
+          totalDebit: payload.paidAmount,
+          totalCapital: -payload.paidAmount,
         },
       }
     );
@@ -159,10 +161,43 @@ const updateLoanACById = async (loanACId: string, payload: Partial<ILoan>) => {
     .populate("transactionRef");
 };
 
+// give loan and interest
+const giveLoan = async (loanACId: string, payload: number) => {
+  const loanAC = await LoanAC.findById(loanACId);
+  if (!loanAC) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "Loan A/C not found");
+  }
+  if (payload <= (loanAC.totalLoan ?? 0)) {
+    throw new ServerAPIError(httpStatus.NOT_FOUND, "You don't have enough loan");
+  }
+  await LoanAC.findByIdAndUpdate(
+    { _id: loanACId },
+    {
+      $inc: {
+        paidAmount: payload,
+        totalLoan: -payload,
+      },
+    }
+  );
+  await BankSummary.updateOne(
+    { _id: config.capital_transactions_key },
+    {
+      $inc: {
+        totalCredit: -payload,
+        totalCapital: payload,
+      },
+    }
+  );
+  return await LoanAC.findById(loanACId)
+    .populate("userId")
+    .populate("transactionRef");
+}
+
 export const LoanACService = {
   createLoanAC,
   getAllLoanAC,
   getLoanACById,
   getMyAC,
   updateLoanACById,
+  giveLoan,
 };

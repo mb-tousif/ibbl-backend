@@ -66,4 +66,17 @@ router.patch(
   LoanACController.updateLoanACById
 );
 
+router.patch(
+  "/give-loan/:id",
+  Authenticate(
+    ENUM_USER_ROLE.CASHIER,
+    ENUM_USER_ROLE.ACCOUNT_HOLDER,
+    ENUM_USER_ROLE.MANAGER,
+    ENUM_USER_ROLE.CEO,
+    ENUM_USER_ROLE.ADMIN
+  ),
+  ValidateRequest(LoanACValidation.instalmentValidation),
+  LoanACController.giveLoan
+);
+
 export const LoanACRoutes = router;

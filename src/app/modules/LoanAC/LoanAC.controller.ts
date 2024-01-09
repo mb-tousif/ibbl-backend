@@ -11,9 +11,7 @@ import { LoanACFilterFields } from "./LoanAC.constants";
 import { LoanAC } from "./LoanAC.schema";
 
  const createLoanAC = CatchAsync(async (req: Request, res: Response) => {
-  const { _id } = req.user as any;
   const payload = req.body;
-  payload.userId = _id;
   const LoanAC = await LoanACService.createLoanAC(payload);
 
    sendResponse(res, {
@@ -88,11 +86,26 @@ const updateLoanACById = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// give loan
+const giveLoan = CatchAsync(async (req: Request, res: Response) => {
+  const loanId = req.params.id;
+  const payload = req.body.paidAmount;
+  const loanAC = await LoanACService.giveLoan(loanId, payload);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "loan A/C instalment gave successfully",
+    data: loanAC,
+  });
+});
+
 export const LoanACController = {
   createLoanAC,
   getAllLoanAC,
   getLoanACById,
   getMyAC,
   updateLoanACById,
+  giveLoan,
 };
 

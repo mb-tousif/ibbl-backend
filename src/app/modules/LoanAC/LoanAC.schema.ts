@@ -34,11 +34,11 @@ const loanACSchema = new Schema<ILoan>(
       type: Number,
       default: 0,
     },
-    depositAmount: {
+    loanAmount: {
       type: Number,
       default: 0,
     },
-    withdrawAmount: {
+    paidAmount: {
       type: Number,
       default: 0,
     },

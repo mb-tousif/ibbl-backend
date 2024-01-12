@@ -7,6 +7,7 @@ import { StaffACRoutes } from "../modules/StaffAC/StaffAC.routes";
 import { LoanACRoutes } from "../modules/LoanAC/LoanAC.routes";
 import { CurrentACRoutes } from "../modules/currentAC/CurrentAC.routes";
 import { TransactionRoutes } from "../modules/transaction/Transaction.routes";
+import { SubscriberRoutes } from "../modules/subscriber/Subscriber.routes";
 
 const router = express.Router();
 
@@ -42,7 +43,11 @@ const moduleRoutes = [
   {
     path: "/transactions",
     route: TransactionRoutes,
-  }
+  },
+  {
+    path: "/subscribers",
+    route: SubscriberRoutes,
+  },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

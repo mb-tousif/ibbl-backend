@@ -21,9 +21,6 @@ async function ConnectServer() {
     
     cron.schedule(`0 0 * * *`, () => {
       updateSavingInterest();
-    });
-
-    cron.schedule(`0 0 1 1 *`, () => {
       updateLoanInterest();
     });
 

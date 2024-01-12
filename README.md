@@ -142,6 +142,13 @@ data manipulation
 - createdAt
 - updatedAt
 
+#### Subscribers
+
+- id
+- email
+- createdAt
+- updatedAt
+
 #### API Endpoints
 
 #### Bank Summary
@@ -207,3 +214,9 @@ data manipulation
 - [x] Get Transaction By Id `GET /api/v1/transactions/get-transaction/:id` [ Only Admin, Manager, Cashier and CEO ]
 - [x] Get My Transactions `GET /api/v1/transactions/my-transactions` [ Account Holder, Manager, Admin, Cashier and CEO]
 - [x] Post create Transaction `POST /api/v1/transactions/save-transaction` [All User]
+
+#### Subscribers
+
+- [x] Get All Subscribers `GET /api/v1/subscribers/get-all-subscribers` [ Only Admin, Manager, Cashier and CEO ]
+- [x] Post create Subscriber `POST /api/v1/subscribers/create-subscriber` [ All User ]
+- [x] Delete Subscriber By Id `DELETE /api/v1/subscribers/delete-subscriber/:id` [ Only Admin, Manager, Cashier and CEO ]

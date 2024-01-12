@@ -7,7 +7,7 @@ export const updateLoanInterest = async () => {
     loanAccounts.forEach(async (account) => {
       // Calculate interest for each account
       const loanInterest = Math.ceil(
-        ((account?.loanAmount * (account?.interestRate ?? 0)) / 100) * 12
+        ((account?.loanAmount * (account?.interestRate ?? 0)) / 100* 365) 
       );
       // Update the interest in the database
       await LoanAC.findByIdAndUpdate(account._id, {
